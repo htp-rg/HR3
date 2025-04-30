@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Service System Management Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="sidebar">
@@ -16,16 +16,16 @@
       <ul class="sidebar-menu">
         <li><a href="dashboard.html">Dashboard</a></li>
 
-        <li><a href="#">Time and Attendance</a></li>
-        <ul>
+        <li><a href="#" onclick="toggleSubMenu('timeAttendance')">Time and Attendance</a></li>
+        <ul id="timeAttendance" style="display:none;">
           <li><a href="employee.html">Employee</a></li>
           <li><a href="department.html">Department</a></li>
           <li><a href="time_entry.html">Time Entry</a></li>
           <li><a href="shift.html">Shift</a></li>
         </ul>
 
-        <li><a href="#">Timesheet</a></li>
-        <ul>
+        <li><a href="#" onclick="toggleSubMenu('timesheet')">Timesheet</a></li>
+        <ul id="timesheet" style="display:none;">
           <li><a href="ts_employee.html">Employee</a></li>
           <li><a href="ts_setup.html">Timesheet Setup</a></li>
           <li><a href="ts_data.html">Timesheet Data Collection</a></li>
@@ -33,16 +33,16 @@
           <li><a href="ts_reporting.html">Timesheet Reporting</a></li>
         </ul>
 
-        <li><a href="#">Claim and Reimbursement</a></li>
-        <ul>
+        <li><a href="#" onclick="toggleSubMenu('claimReimbursement')">Claim and Reimbursement</a></li>
+        <ul id="claimReimbursement" style="display:none;">
           <li><a href="policy.html">Policy</a></li>
           <li><a href="claimdata.html">Claim Data</a></li>
           <li><a href="configuration.html">Configuration</a></li>
           <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
         </ul>
 
-        <li><a href="#">Leave Management</a></li>
-        <ul>
+        <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a></li>
+        <ul id="leaveManagement" style="display:none;">
           <li><a href="lv_employee.html">Employee</a></li>
           <li><a href="lv_request.html">Leave Request</a></li>
           <li><a href="lv_department.html">Department</a></li>
@@ -51,8 +51,8 @@
           <li><a href="lv_policy.html">Leave Policy</a></li>
         </ul>
 
-        <li><a href="#">Shift and Scheduling</a></li>
-        <ul>
+        <li><a href="#" onclick="toggleSubMenu('shiftScheduling')">Shift and Scheduling</a></li>
+        <ul id="shiftScheduling" style="display:none;">
           <li><a href="shift_planning.html">Shift Planning</a></li>
           <li><a href="scheduling_management.html">Scheduling Management</a></li>
           <li><a href="work_packages.html">Work Packages</a></li>
@@ -78,6 +78,15 @@
   <script>
     function confirmLogout() {
       return confirm("Are you sure you want to log out?");
+    }
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      if (submenu.style.display === 'none') {
+        submenu.style.display = 'block';
+      } else {
+        submenu.style.display = 'none';
+      }
     }
   </script>
 </body>
