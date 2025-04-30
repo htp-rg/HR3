@@ -293,13 +293,33 @@
     </div>
     <a href="login1.html" class="logout-link" onclick="return confirmLogout();">Log out</a>
   </div>
-
-  <div class="content-wrapper">
+ <div class="content-wrapper">
     <header class="topbar">
       <div class="language">EN</div>
-      <div class="quick-access">Quick Access</div>
-      <div class="user-profile">Admin</div>
+
+      <div class="dropdown">
+        <button class="dropbtn">Quick Access <i class="fas fa-chevron-down"></i></button>
+        <div class="dropdown-content">
+          <a href="#">Time In</a>
+          <a href="add_employee.html">New Employee</a>
+          <a href="#">Company</a>
+          <a href="#">Department</a>
+          <a href="#">Job Title</a>
+          <a href="#">Leave Type</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="dropbtn">Admin <i class="fas fa-chevron-down"></i></button>
+        <div class="dropdown-content">
+          <a href="#">Update Account</a>
+          <a href="#">Change Password</a>
+          <a href="#">Switch to My Account</a>
+          <a href="login1.html" onclick="return confirmLogout();">Log out</a>
+        </div>
+      </div>
     </header>
+
 
     <section class="dashboard">
       <div class="dashboard-header">
