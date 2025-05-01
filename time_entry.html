@@ -425,28 +425,6 @@
     });
   }
 
-  function saveEntry(event) {
-    event.preventDefault();
-    const entry = {
-      entryId: document.getElementById("entryId").value,
-      employeeId: document.getElementById("employeeId").value,
-      clockIn: document.getElementById("clockIn").value,
-      clockOut: document.getElementById("clockOut").value,
-      status: document.getElementById("status").value,
-      entryDate: document.getElementById("entryDate").value
-    };
-    let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-    const index = document.getElementById("editIndex").value;
-    if (index === "") {
-      entries.push(entry);
-    } else {
-      entries[parseInt(index)] = entry;
-    }
-    localStorage.setItem("timeEntries", JSON.stringify(entries));
-    closeModal();
-    loadEntries();
-  }
-
   function editEntry(index) {
   const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
   const entry = entries[index];
