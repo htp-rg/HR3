@@ -285,53 +285,49 @@
   </div>
 
   <script>
-    function confirmLogout() {
-      return confirm("Are you sure you want to log out?");
-    }
+  function confirmLogout() {
+    return confirm("Are you sure you want to log out?");
+  }
 
-    const reports = [
-      { reportId: 'RPT001', employeeId: '0015', period: 'April 1 - April 15, 2025', totalHours: 80 },
-      { reportId: 'RPT002', employeeId: '0014', period: 'April 1 - April 15, 2025', totalHours: 76 },
-      { reportId: 'RPT003', employeeId: '0013', period: 'April 1 - April 15, 2025', totalHours: 82 },
-      { reportId: 'RPT004', employeeId: '0012', period: 'April 1 - April 15, 2025', totalHours: 79 },
-      { reportId: 'RPT005', employeeId: '0011', period: 'April 1 - April 15, 2025', totalHours: 88 }
-    ];
+  const reports = [
+    { reportId: 'RPT001', employeeId: '0015', period: 'April 1 - April 15, 2025', totalHours: 80 },
+    { reportId: 'RPT002', employeeId: '0014', period: 'April 1 - April 15, 2025', totalHours: 76 },
+    { reportId: 'RPT003', employeeId: '0013', period: 'April 1 - April 15, 2025', totalHours: 82 },
+    { reportId: 'RPT004', employeeId: '0012', period: 'April 1 - April 15, 2025', totalHours: 79 },
+    { reportId: 'RPT005', employeeId: '0011', period: 'April 1 - April 15, 2025', totalHours: 88 }
+  ];
 
-    function displayReports(list = reports) {
-      const tbody = document.getElementById('reportTableBody');
-      tbody.innerHTML = '';
-      list.forEach(report => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${report.reportId}</td>
-          <td>${report.employeeId}</td>
-          <td>${report.period}</td>
-          <td>${report.totalHours}</td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
+  function displayReports(list = reports) {
+    const tbody = document.getElementById('reportTableBody');
+    tbody.innerHTML = '';
+    list.forEach(report => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${report.reportId}</td>
+        <td>${report.employeeId}</td>
+        <td>${report.period}</td>
+        <td>${report.totalHours}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
 
-    function searchReports() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = reports.filter(r =>
-        r.reportId.toLowerCase().includes(query) ||
-        r.employeeId.toLowerCase().includes(query) ||
-        r.period.toLowerCase().includes(query)
-      );
-      displayReports(filtered);
-    }
-}
-        function toggleSubMenu(id) {
-            const submenu = document.getElementById(id);
-            if (submenu.style.display === 'none') {
-                submenu.style.display = 'block';
-            } else {
-                submenu.style.display = 'none';
-            }
-        }
-   
-    displayReports();
-  </script>
-</body>
-</html>
+  function searchReports() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = reports.filter(r =>
+      r.reportId.toLowerCase().includes(query) ||
+      r.employeeId.toLowerCase().includes(query) ||
+      r.period.toLowerCase().includes(query)
+    );
+    displayReports(filtered);
+  }
+
+  function toggleSubMenu(id) {
+    const submenu = document.getElementById(id);
+    submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+  }
+
+  
+  displayReports();
+</script>
+
