@@ -411,7 +411,7 @@
   console.log("Entries loaded:", entries); 
   entries.forEach((entry, index) => {
     const row = table.insertRow();
-    row.innerHTML `
+    row.innerHTML = `
         <td>${entry.entryId}</td>
         <td>${entry.employeeId}</td>
         <td>${entry.clockIn}</td>
@@ -423,82 +423,80 @@
           <i class="fas fa-trash" onclick="deleteEntry(${index})"></i>
         </td>
       `;
-    });
+  });
+}
+
+function editEntry(index) {
+  const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+  const entry = entries[index];
+
+  document.getElementById("editIndex").value = index;
+  document.getElementById("entryId").value = entry.entryId;
+  document.getElementById("employeeId").value = entry.employeeId;
+  document.getElementById("clockIn").value = entry.clockIn;
+  document.getElementById("clockOut").value = entry.clockOut;
+  document.getElementById("status").value = entry.status;
+  document.getElementById("entryDate").value = entry.entryDate;
+
+  openModal(true); 
+}
+
+function saveEntry(event) {
+  event.preventDefault();
+
+  const entry = {
+    entryId: document.getElementById("entryId").value,
+    employeeId: document.getElementById("employeeId").value,
+    clockIn: document.getElementById("clockIn").value,
+    clockOut: document.getElementById("clockOut").value,
+    status: document.getElementById("status").value,
+    entryDate: document.getElementById("entryDate").value
+  };
+
+  let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+  const index = document.getElementById("editIndex").value; 
+
+  if (index === "") {
+    entries.push(entry);
+  } else {
+    entries[parseInt(index)] = entry;
   }
 
-  function editEntry(index) {
-    const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-    const entry = entries[index];
+  localStorage.setItem("timeEntries", JSON.stringify(entries)); 
 
-    
-    document.getElementById("editIndex").value = index;
-    document.getElementById("entryId").value = entry.entryId;
-    document.getElementById("employeeId").value = entry.employeeId;
-    document.getElementById("clockIn").value = entry.clockIn;
-    document.getElementById("clockOut").value = entry.clockOut;
-    document.getElementById("status").value = entry.status;
-    document.getElementById("entryDate").value = entry.entryDate;
+  closeModal(); 
+  loadEntries(); 
+}
 
-    openModal(true); 
-  }
-
-  function saveEntry(event) {
-    event.preventDefault();
-
-    const entry = {
-      entryId: document.getElementById("entryId").value,
-      employeeId: document.getElementById("employeeId").value,
-      clockIn: document.getElementById("clockIn").value,
-      clockOut: document.getElementById("clockOut").value,
-      status: document.getElementById("status").value,
-      entryDate: document.getElementById("entryDate").value
-    };
-
+function deleteEntry(index) {
+  if (confirm("Delete this entry?")) {
     let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-    const index = document.getElementById("editIndex").value; 
-
-    if (index === "") {
-      
-      entries.push(entry);
-    } else {
-      
-      entries[parseInt(index)] = entry;
-    }
-
+    entries.splice(index, 1); 
     localStorage.setItem("timeEntries", JSON.stringify(entries)); 
-
-    closeModal(); 
     loadEntries(); 
   }
+}
 
-  function deleteEntry(index) {
-    if (confirm("Delete this entry?")) {
-      let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-      entries.splice(index, 1); 
-      localStorage.setItem("timeEntries", JSON.stringify(entries)); 
-      loadEntries(); 
-    }
-  }
+function openModal(isEdit = false) {
+  document.getElementById("entryModal").style.display = "block"; 
+  document.getElementById("modalTitle").textContent = isEdit ? "Edit Entry" : "Add Entry"; 
+}
 
-  function openModal(isEdit = false) {
-    document.getElementById("entryModal").style.display = "block"; 
-    document.getElementById("modalTitle").textContent = isEdit ? "Edit Entry" : "Add Entry"; 
-  }
+function closeModal() {
+  document.getElementById("entryModal").style.display = "none"; 
+  document.getElementById("entryForm").reset(); 
+  document.getElementById("editIndex").value = "";
+}
 
-  function closeModal() {
-    document.getElementById("entryModal").style.display = "none"; 
-    document.getElementById("entryForm").reset(); 
-    document.getElementById("editIndex").value = "";
-  }
+function toggleSubMenu(id) {
+  const submenu = document.getElementById(id);
+  submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+}
 
-  function toggleSubMenu(id) {
-    const submenu = document.getElementById(id);
-    submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
-  }
-
- window.onload = () => {
+window.onload = () => {
   console.log("Page loaded.");
   loadEntries(); 
+};
    </script>
 </body>
 </html>
