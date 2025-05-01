@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Service System Management Dashboard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -150,6 +150,7 @@
       position: relative;
       display: inline-block;
     }
+
     .dropbtn {
       background: none;
       border: none;
@@ -158,9 +159,11 @@
       color: #2c3e50;
       font-size: 16px;
     }
+
     .dropbtn i {
       margin-left: 5px;
     }
+
     .dropdown-content {
       display: none;
       position: absolute;
@@ -172,6 +175,7 @@
       border-radius: 5px;
       overflow: hidden;
     }
+
     .dropdown-content a {
       color: #2c3e50;
       padding: 12px 16px;
@@ -179,42 +183,35 @@
       display: block;
       border-bottom: 1px solid #f0f0f0;
     }
+
     .dropdown-content a:hover {
       background-color: #f1f1f1;
     }
+
     .dropdown:hover .dropdown-content {
       display: block;
     }
+
   </style>
-  <script>
-    function toggleSubMenu(id) {
-      var el = document.getElementById(id);
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    }
-    function confirmLogout() {
-      return confirm("Are you sure you want to log out?");
-    }
-  </script>
 </head>
 <body>
-<div class="container">
-  <div class="sidebar">
-    <div class="sidebar-top">
-      <img src="admin-avatar.png" alt="admin" class="admin-image">
-      <p style="font-size: 18px; font-weight: bold;">SERVICES MANAGEMENT SYSTEM</p>
-    </div>
-    <div class="sidebar-content">
-      <ul class="sidebar-menu">
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="#" onclick="toggleSubMenu('timeAttendance')">Time and Attendance</a>
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <img src="admin-avatar.png" alt="admin" class="admin-image">
+        <p style="font-size: 18px; font-weight: bold;">SERVICES MANAGEMENT SYSTEM</p>
+      </div>
+      <div class="sidebar-content">
+        <ul class="sidebar-menu">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="#" onclick="toggleSubMenu('timeAttendance')">Time and Attendance</a></li>
           <ul id="timeAttendance" style="display:none;">
             <li><a href="employee.html">Employee</a></li>
             <li><a href="department.html">Department</a></li>
             <li><a href="time_entry.html">Time Entry</a></li>
             <li><a href="shift.html">Shift</a></li>
           </ul>
-        </li>
-        <li><a href="#" onclick="toggleSubMenu('timesheet')">Timesheet</a>
+          <li><a href="#" onclick="toggleSubMenu('timesheet')">Timesheet</a></li>
           <ul id="timesheet" style="display:none;">
             <li><a href="ts_employee.html">Employee</a></li>
             <li><a href="ts_setup.html">Timesheet Setup</a></li>
@@ -222,16 +219,14 @@
             <li><a href="ts_validation.html">Timesheet Validation</a></li>
             <li><a href="ts_reporting.html">Timesheet Reporting</a></li>
           </ul>
-        </li>
-        <li><a href="#" onclick="toggleSubMenu('claimReimbursement')">Claim and Reimbursement</a>
+          <li><a href="#" onclick="toggleSubMenu('claimReimbursement')">Claim and Reimbursement</a></li>
           <ul id="claimReimbursement" style="display:none;">
             <li><a href="policy.html">Policy</a></li>
             <li><a href="claimdata.html">Claim Data</a></li>
             <li><a href="configuration.html">Configuration</a></li>
             <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
           </ul>
-        </li>
-        <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a>
+          <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a></li>
           <ul id="leaveManagement" style="display:none;">
             <li><a href="lv_employee.html">Employee</a></li>
             <li><a href="lv_request.html">Leave Request</a></li>
@@ -240,23 +235,23 @@
             <li><a href="lv_balance.html">Leave Balance</a></li>
             <li><a href="lv_policy.html">Leave Policy</a></li>
           </ul>
-        </li>
-        <li><a href="#" onclick="toggleSubMenu('shiftScheduling')">Shift and Scheduling</a>
+          <li><a href="#" onclick="toggleSubMenu('shiftScheduling')">Shift and Scheduling</a></li>
           <ul id="shiftScheduling" style="display:none;">
             <li><a href="shift_planning.html">Shift Planning</a></li>
             <li><a href="scheduling_management.html">Scheduling Management</a></li>
             <li><a href="work_packages.html">Work Packages</a></li>
           </ul>
-        </li>
-        <li><a href="users.html">Users</a></li>
-        <li><a href="settings.html">Settings</a></li>
-      </ul>
+          <li><a href="users.html">Users</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </div>
+      <a href="login1.html" class="logout-link" onclick="return confirmLogout();">Log out</a>
     </div>
-    <a href="login1.html" class="logout-link" onclick="return confirmLogout();">Log out</a>
-  </div>
-  <div class="content-wrapper">
+
+    <div class="content-wrapper">
     <header class="topbar">
       <div class="language">EN</div>
+
       <div class="dropdown">
         <button class="dropbtn">Quick Access <i class="fas fa-chevron-down"></i></button>
         <div class="dropdown-content">
@@ -268,6 +263,7 @@
           <a href="#">Leave Type</a>
         </div>
       </div>
+
       <div class="dropdown">
         <button class="dropbtn">Admin <i class="fas fa-chevron-down"></i></button>
         <div class="dropdown-content">
@@ -278,64 +274,84 @@
         </div>
       </div>
     </header>
-    <section class="dashboard">
-      <div class="cards">
-        <div class="card red">
-          <h3>Employees</h3>
-          <p>Regular: 5</p>
+
+      <section class="dashboard">
+        <div class="cards">
+          <div class="card red">
+            <h3>Employees</h3>
+            <p>Regular: 5</p>
+          </div>
+          <div class="card green">
+            <h3>Attendances</h3>
+            <p>Online: 1</p>
+            <p>Offline: 4</p>
+          </div>
+          <div class="card yellow">
+            <h3>Leaves of Absence</h3>
+            <p>Approved: 2</p>
+            <p>Pending: 1</p>
+          </div>
         </div>
-        <div class="card green">
-          <h3>Attendances</h3>
-          <p>Online: 1</p>
-          <p>Offline: 4</p>
+        <div class="tables">
+          <div class="table-section">
+            <h4>Newest Employees</h4>
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Position</th><th>Start Date</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Feniza, Rogen Mark B.</td><td>Accounting Specialist</td><td>Jan 01, 2020</td></tr>
+                <tr><td>Sabulao, Joana Joy</td><td>Operations Manager</td><td>Jan 06, 2019</td></tr>
+                <tr><td>Tribiana, Pablo T.</td><td>Chief Executive Officer</td><td>Jan 01, 2020</td></tr>
+                <tr><td>Tabianan, Jenilyn B.</td><td>Marketing Manager</td><td>Jan 03, 2018</td></tr>
+                <tr><td>Bermoy, Abigail M.</td><td>Accounting Specialist</td><td>Feb 01, 2017</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-section">
+            <h4>Recent Attendances</h4>
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Time</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Bermoy, Abigail M.</td><td>Time-Out</td><td>04:01 PM</td></tr>
+                <tr><td>Bermoy, Abigail M.</td><td>Time-In</td><td>08:01 AM</td></tr>
+                <tr><td>Bermoy, Abigail M.</td><td>Time-Out</td><td>04:14 PM</td></tr>
+                <tr><td>Bermoy, Abigail M.</td><td>Time-In</td><td>08:03 AM</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-section">
+            <h4>Recent Leaves of Absence</h4>
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Date</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Tabianan, Jenilyn B</td><td>Mar 02, 2020</td></tr>
+                <tr><td>Bermoy, Abigail M.</td><td>Jan 09, 2020</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="card yellow">
-          <h3>Leaves of Absence</h3>
-          <p>Approved: 2</p>
-          <p>Pending: 1</p>
-        </div>
-      </div>
-      <div class="tables">
-        <div class="table-section">
-          <h4>Newest Employees</h4>
-          <table>
-            <thead>
-              <tr><th>Name</th><th>Position</th><th>Start Date</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Feniza, Rogen Mark B.</td><td>Accounting Specialist</td><td>Jan 01, 2020</td></tr>
-              <tr><td>Sabulao, Joana Joy</td><td>Operations Manager</td><td>Jan 06, 2019</td></tr>
-              <tr><td>Tribiana, Pablo T.</td><td>Chief Executive Officer</td><td>Jan 01, 2020</td></tr>
-              <tr><td>Tabianan, Jenilyn B.</td><td>Marketing Manager</td><td>Jan 03, 2018</td></tr>
-              <tr><td>Bermoy, Abigail M.</td><td>Accounting Specialist</td><td>Feb 01, 2017</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="table-section">
-          <h4>Recent Attendances</h4>
-          <table>
-            <thead>
-              <tr><th>Name</th><th>Type</th><th>Time</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Bermoy, Abigail M.</td><td>Time-Out</td><td>04:01 PM</td></tr>
-              <tr><td>Bermoy, Abigail M.</td><td>Time-In</td><td>08:01 AM</td></tr>
-              <tr><td>Bermoy, Abigail M.</td><td>Time-Out</td><td>04:14 PM</td></tr>
-              <tr><td>Bermoy, Abigail M.</td><td>Time-In</td><td>08:03 AM</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
-</div>
-  
-<script>
- function toggleSubMenu(id) { const submenu = document.getElementById(id); if (submenu.style.display === "none" || submenu.style.display === "") { submenu.style.display = "block"; } else { submenu.style.display = "none"; }}
-</script>
+  <script>
+    function confirmLogout() {
+      return confirm("Are you sure you want to log out?");
+    }
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      if (submenu.style.display === 'none') {
+        submenu.style.display = 'block';
+      } else {
+        submenu.style.display = 'none';
+      }
+    }
+  </script>
 </body>
 </html>
-
-
 
 
