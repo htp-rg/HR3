@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Employee Setup</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #ecf0f1;
+      color: black;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 280px;
+      background: rgba(44, 62, 80, 0.9);
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-top {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .admin-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 2px solid #fff;
+    }
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-menu li {
+      padding: 15px 20px;
+      border-bottom: 1px solid #34495e;
+      cursor: pointer;
+    }
+    .sidebar-menu li:hover {
+      background: #3498db;
+    }
+    .sidebar-menu li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      font-size: 16px;
+    }
+    .logout-link {
+      background: black;
+      color: white;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px 20px;
+      margin: 20px;
+    }
+    .logout-link:hover {
+      background: #333;
+    }
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      background: white;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .dashboard {
+      padding: 20px;
+      flex: 1;
+    }
+    .table-section {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      overflow-x: auto;
+    }
+    .search-bar {
+      margin-bottom: 20px;
+    }
+    .search-bar input {
+      width: 30%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+ <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-top">
+                <img src="admin-avatar.png" alt="admin" class="admin-image">
+                <p style="font-size: 18px; font-weight: bold;">HUMAN RESOURCES 3</p>
+            </div>
+            <div class="sidebar-content">
+                <ul class="sidebar-menu">
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="#" onclick="toggleSubMenu('timeAttendance')">Time and Attendance</a></li>
+                    <ul id="timeAttendance" style="display:none;">
+                        <li><a href="employee.html">Employee</a></li>
+                        <li><a href="department.html">Department</a></li>
+                        <li><a href="time_entry.html">Time Entry</a></li>
+                        <li><a href="shift.html">Shift</a></li>
+                    </ul>
+                    <li><a href="#" onclick="toggleSubMenu('timesheet')">Timesheet</a></li>
+                    <ul id="timesheet" style="display:none;">
+                        <li><a href="ts_employee.html">Employee</a></li>
+                        <li><a href="ts_setup.html">Timesheet Setup</a></li>
+                        <li><a href="ts_data.html">Timesheet Data Collection</a></li>
+                        <li><a href="ts_validation.html">Timesheet Validation</a></li>
+                        <li><a href="ts_reporting.html">Timesheet Reporting</a></li>
+                    </ul>
+                    <li><a href="#" onclick="toggleSubMenu('claimReimbursement')">Claim and Reimbursement</a></li>
+                    <ul id="claimReimbursement" style="display:none;">
+                        <li><a href="policy.html">Policy</a></li>
+                        <li><a href="claimdata.html">Claim Data</a></li>
+                        <li><a href="configuration.html">Configuration</a></li>
+                        <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
+                    </ul>
+                    <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a></li>
+                    <ul id="leaveManagement" style="display:none;">
+                        <li><a href="lv_employee.html">Employee</a></li>
+                        <li><a href="lv_request.html">Leave Request</a></li>
+                        <li><a href="lv_department.html">Department</a></li>
+                        <li><a href="lv_approval.html">Approval History</a></li>
+                        <li><a href="lv_balance.html">Leave Balance</a></li>
+                        <li><a href="lv_policy.html">Leave Policy</a></li>
+                    </ul>
+                    <li><a href="#" onclick="toggleSubMenu('shiftScheduling')">Shift and Scheduling</a></li>
+                    <ul id="shiftScheduling" style="display:none;">
+                        <li><a href="shift_planning.html">Shift Planning</a></li>
+                        <li><a href="scheduling_management.html">Scheduling Management</a></li>
+                        <li><a href="work_packages.html">Work Packages</a></li>
+                    </ul>
+                    <li><a href="users.html">Users</a></li>
+                    <li><a href="settings.html">Settings</a></li>
+                </ul>
+            </div>
+            <a href="login1.html" class="logout-link" onclick="return confirmLogout();">Log out</a>
+        </div>
+    <div class="content-wrapper">
+      <header class="topbar">
+        <div class="language">EN</div>
+      </header>
+
+      <section class="dashboard">
+        <div class="search-bar">
+          <input type="text" id="searchInput" onkeyup="searchSetup()" placeholder="Search by Employee ID or Frequency.." />
+        </div>
+
+        <div class="table-section">
+          <h4>Employee Setup</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Set Up ID</th>
+                <th>Employee ID</th>
+                <th>Frequency</th>
+                <th>Start Day</th>
+                <th>End Day</th>
+              </tr>
+            </thead>
+            <tbody id="setupTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    function confirmLogout() {
+      return confirm("Are you sure you want to log out?");
+    }
+
+    const setups = [
+      { setupId: 'S001', empId: '0015', frequency: 'Weekly', startDay: 'Monday', endDay: 'Friday' },
+      { setupId: 'S002', empId: '0014', frequency: 'Bi-Weekly', startDay: 'Tuesday', endDay: 'Saturday' },
+      { setupId: 'S003', empId: '0013', frequency: 'Monthly', startDay: '1st', endDay: '30th' },
+      { setupId: 'S004', empId: '0012', frequency: 'Weekly', startDay: 'Wednesday', endDay: 'Sunday' },
+      { setupId: 'S005', empId: '0011', frequency: 'Monthly', startDay: '1st', endDay: '15th' }
+    ];
+
+    function displaySetups(list = setups) {
+      const tableBody = document.getElementById('setupTableBody');
+      tableBody.innerHTML = '';
+      list.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.setupId}</td>
+          <td>${item.empId}</td>
+          <td>${item.frequency}</td>
+          <td>${item.startDay}</td>
+          <td>${item.endDay}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function searchSetup() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = setups.filter(s =>
+        s.empId.toLowerCase().includes(query) ||
+        s.frequency.toLowerCase().includes(query)
+      );
+      displaySetups(filtered);
+    }
+function toggleSubMenu(id) {
+            const submenu = document.getElementById(id);
+            if (submenu.style.display === 'none') {
+                submenu.style.display = 'block';
+            } else {
+                submenu.style.display = 'none';
+            }
+        }
+    displaySetups();
+  </script>
+</body>
+</html>
