@@ -485,7 +485,11 @@
     submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
   }
 
-  window.onload = loadEntries;
+ window.onload = () => {
+  if (localStorage.getItem("timeEntries")) {
+    loadEntries();
+  }
+};
 </script>
 </body>
 </html>
