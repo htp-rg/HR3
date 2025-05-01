@@ -415,6 +415,15 @@
       tableBody.appendChild(row);
     });
   }
+  
+  function toggleSubMenu(id) {
+    const submenu = document.getElementById(id);
+    if (submenu.style.display === "none" || submenu.style.display === "") {
+      submenu.style.display = "block";
+    } else {
+      submenu.style.display = "none";
+    }
+  }
 
   window.onload = renderDepartmentTable;
 </script>
