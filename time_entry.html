@@ -391,79 +391,98 @@
     </div>
   </div>
 
-  <script>
- }   
- window.onload = function () {
-  const existing = JSON.parse(localStorage.getItem('timeEntries'));
-  if (!existing || existing.length === 0) {
-    const defaultEntries = [
-      { entryId: "001", employeeId: "0015", clockIn: "09:00 AM", clockOut: "05:00 PM", status: "Active", entryDate: "2025-05-01" },
-      { entryId: "002", employeeId: "0016", clockIn: "08:30 AM", clockOut: "04:30 PM", status: "Active", entryDate: "2025-05-01" },
-      { entryId: "003", employeeId: "0017", clockIn: "10:00 AM", clockOut: "06:00 PM", status: "Late", entryDate: "2025-05-01" },
-      { entryId: "004", employeeId: "0018", clockIn: "09:15 AM", clockOut: "05:15 PM", status: "Active", entryDate: "2025-05-01" },
-      { entryId: "005", employeeId: "0019", clockIn: "09:00 AM", clockOut: "05:00 PM", status: "On Leave", entryDate: "2025-05-01" }
-    ];
-    localStorage.setItem('timeEntries', JSON.stringify(defaultEntries));
-  }
-  loadEntries();
-};
-  }
-
-  function saveEntry(event) {
-    event.preventDefault();
-    const entry = {
-      entryId: document.getElementById('entryId').value,
-      employeeId: document.getElementById('employeeId').value,
-      clockIn: document.getElementById('clockIn').value,
-      clockOut: document.getElementById('clockOut').value,
-      status: document.getElementById('status').value,
-      entryDate: document.getElementById('entryDate').value
-    };
-    let entries = JSON.parse(localStorage.getItem('timeEntries')) || [];
-    const index = document.getElementById('editIndex').value;
-
-    if (index === '') {
-      entries.push(entry);
-    } else {
-      entries[index] = entry;
+ <script>
+    function loadEntries() {
+      const table = document.getElementById("timeEntryTable");
+      table.innerHTML = "";
+      const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+      entries.forEach((entry, index) => {
+        const row = table.insertRow();
+        row.innerHTML = `
+          <td>${entry.entryId}</td>
+          <td>${entry.employeeId}</td>
+          <td>${entry.clockIn}</td>
+          <td>${entry.clockOut}</td>
+          <td>${entry.status}</td>
+          <td>${entry.entryDate}</td>
+          <td class="actions">
+            <i class="fas fa-edit" onclick="editEntry(${index})"></i>
+            <i class="fas fa-trash" onclick="deleteEntry(${index})"></i>
+          </td>
+        `;
+      });
     }
 
-    localStorage.setItem('timeEntries', JSON.stringify(entries));
-    loadEntries();
-    closeModal();
-  }
-
-  function editEntry(icon) {
-    const row = icon.parentElement.parentElement;
-    const index = row.rowIndex - 1;
-    const entries = JSON.parse(localStorage.getItem('timeEntries')) || [];
-    const entry = entries[index];
-
-    document.getElementById('editIndex').value = index;
-    document.getElementById('entryId').value = entry.entryId;
-    document.getElementById('employeeId').value = entry.employeeId;
-    document.getElementById('clockIn').value = entry.clockIn;
-    document.getElementById('clockOut').value = entry.clockOut;
-    document.getElementById('status').value = entry.status;
-    document.getElementById('entryDate').value = entry.entryDate;
-
-    openModal(true);
-  }
-
-  function deleteEntry(icon) {
-    if (confirm("Are you sure you want to delete this entry?")) {
-      const row = icon.parentElement.parentElement;
-      const index = row.rowIndex - 1;
-      let entries = JSON.parse(localStorage.getItem('timeEntries')) || [];
-      entries.splice(index, 1);
-      localStorage.setItem('timeEntries', JSON.stringify(entries));
+    function saveEntry(event) {
+      event.preventDefault();
+      const entry = {
+        entryId: document.getElementById("entryId").value,
+        employeeId: document.getElementById("employeeId").value,
+        clockIn: document.getElementById("clockIn").value,
+        clockOut: document.getElementById("clockOut").value,
+        status: document.getElementById("status").value,
+        entryDate: document.getElementById("entryDate").value
+      };
+      let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+      const index = document.getElementById("editIndex").value;
+      if (index === "") {
+        entries.push(entry);
+      } else {
+        entries[parseInt(index)] = entry;
+      }
+      localStorage.setItem("timeEntries", JSON.stringify(entries));
+      closeModal();
       loadEntries();
     }
-   }
-    function toggleSubMenu(id) {
-      const submenu = document.getElementById(id);
-      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+
+    function editEntry(index) {
+      const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+      const entry = entries[index];
+      document.getElementById("editIndex").value = index;
+      document.getElementById("entryId").value = entry.entryId;
+      document.getElementById("employeeId").value = entry.employeeId;
+      document.getElementById("clockIn").value = entry.clockIn;
+      document.getElementById("clockOut").value = entry.clockOut;
+      document.getElementById("status").value = entry.status;
+      document.getElementById("entryDate").value = entry.entryDate;
+      openModal(true);
     }
-</script>
+
+    function deleteEntry(index) {
+      if (confirm("Delete this entry?")) {
+        let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+        entries.splice(index, 1);
+        localStorage.setItem("timeEntries", JSON.stringify(entries));
+        loadEntries();
+      }
+    }
+
+    function openModal(isEdit = false) {
+      document.getElementById("entryModal").style.display = "block";
+      document.getElementById("modalTitle").textContent = isEdit ? "Edit Entry" : "Add Entry";
+    }
+
+    function closeModal() {
+      document.getElementById("entryModal").style.display = "none";
+      document.getElementById("entryForm").reset();
+      document.getElementById("editIndex").value = "";
+    }
+
+    function confirmLogout() {
+      return confirm("Are you sure you want to log out?");
+   }
+    }
+        function toggleSubMenu(id) {
+            const submenu = document.getElementById(id);
+            if (submenu.style.display === 'none') {
+                submenu.style.display = 'block';
+            } else {
+                submenu.style.display = 'none';
+            }
+        }
+  
+   
+    window.onload = loadEntries;
+  </script>
 </body>
 </html>
