@@ -366,123 +366,124 @@
         </div>
       </section>
 
-      <div id="entryModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
-          <h3 id="modalTitle">Add Entry</h3>
-          <form id="entryForm" onsubmit="saveEntry(event)">
-            <input type="hidden" id="editIndex" />
-            <label>Entry ID:</label><br />
-            <input type="text" id="entryId" required /><br /><br />
-            <label>Employee ID:</label><br />
-            <input type="text" id="employeeId" required /><br /><br />
-            <label>Clock In Time:</label><br />
-            <input type="text" id="clockIn" required /><br /><br />
-            <label>Clock Out Time:</label><br />
-            <input type="text" id="clockOut" required /><br /><br />
-            <label>Status:</label><br />
-            <input type="text" id="status" required /><br /><br />
-            <label>Entry Date:</label><br />
-            <input type="date" id="entryDate" required /><br /><br />
-            <button type="submit" style="padding: 10px 20px; background: #2ecc71; border: none; color: white; border-radius: 5px;">Save</button>
-          </form>
-        </div>
-      </div>
+      <div id="entryModal" style="display:none; position:fixed; top:20%; left:30%; background:#fff; padding:20px; border:1px solid #ccc; z-index:1000;">
+  <h2 id="modalTitle">Add Entry</h2>
+  <form id="entryForm" onsubmit="saveEntry(event)">
+    <input type="hidden" id="editIndex" />
+    <div>
+      <label for="entryId">Entry ID:</label>
+      <input type="text" id="entryId" required />
     </div>
-  </div>
+    <div>
+      <label for="employeeId">Employee ID:</label>
+      <input type="text" id="employeeId" required />
+    </div>
+    <div>
+      <label for="clockIn">Clock In:</label>
+      <input type="time" id="clockIn" required />
+    </div>
+    <div>
+      <label for="clockOut">Clock Out:</label>
+      <input type="time" id="clockOut" required />
+    </div>
+    <div>
+      <label for="status">Status:</label>
+      <input type="text" id="status" required />
+    </div>
+    <div>
+      <label for="entryDate">Entry Date:</label>
+      <input type="date" id="entryDate" required />
+    </div>
+    <div style="margin-top: 10px;">
+      <button type="submit">Save</button>
+      <button type="button" onclick="closeModal()">Cancel</button>
+    </div>
+  </form>
+</div>
 
- <script>
-    function loadEntries() {
-      const table = document.getElementById("timeEntryTable");
-      table.innerHTML = "";
-      const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-      entries.forEach((entry, index) => {
-        const row = table.insertRow();
-        row.innerHTML = `
-          <td>${entry.entryId}</td>
-          <td>${entry.employeeId}</td>
-          <td>${entry.clockIn}</td>
-          <td>${entry.clockOut}</td>
-          <td>${entry.status}</td>
-          <td>${entry.entryDate}</td>
-          <td class="actions">
-            <i class="fas fa-edit" onclick="editEntry(${index})"></i>
-            <i class="fas fa-trash" onclick="deleteEntry(${index})"></i>
-          </td>
-        `;
-      });
+<script>
+  function loadEntries() {
+    const table = document.getElementById("timeEntryTable");
+    table.innerHTML = "";
+    const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+    entries.forEach((entry, index) => {
+      const row = table.insertRow();
+      row.innerHTML = `
+        <td>${entry.entryId}</td>
+        <td>${entry.employeeId}</td>
+        <td>${entry.clockIn}</td>
+        <td>${entry.clockOut}</td>
+        <td>${entry.status}</td>
+        <td>${entry.entryDate}</td>
+        <td class="actions">
+          <i class="fas fa-edit" onclick="editEntry(${index})"></i>
+          <i class="fas fa-trash" onclick="deleteEntry(${index})"></i>
+        </td>
+      `;
+    });
+  }
+
+  function saveEntry(event) {
+    event.preventDefault();
+    const entry = {
+      entryId: document.getElementById("entryId").value,
+      employeeId: document.getElementById("employeeId").value,
+      clockIn: document.getElementById("clockIn").value,
+      clockOut: document.getElementById("clockOut").value,
+      status: document.getElementById("status").value,
+      entryDate: document.getElementById("entryDate").value
+    };
+    let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+    const index = document.getElementById("editIndex").value;
+    if (index === "") {
+      entries.push(entry);
+    } else {
+      entries[parseInt(index)] = entry;
     }
+    localStorage.setItem("timeEntries", JSON.stringify(entries));
+    closeModal();
+    loadEntries();
+  }
 
-    function saveEntry(event) {
-      event.preventDefault();
-      const entry = {
-        entryId: document.getElementById("entryId").value,
-        employeeId: document.getElementById("employeeId").value,
-        clockIn: document.getElementById("clockIn").value,
-        clockOut: document.getElementById("clockOut").value,
-        status: document.getElementById("status").value,
-        entryDate: document.getElementById("entryDate").value
-      };
+  function editEntry(index) {
+    const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+    const entry = entries[index];
+    document.getElementById("editIndex").value = index;
+    document.getElementById("entryId").value = entry.entryId;
+    document.getElementById("employeeId").value = entry.employeeId;
+    document.getElementById("clockIn").value = entry.clockIn;
+    document.getElementById("clockOut").value = entry.clockOut;
+    document.getElementById("status").value = entry.status;
+    document.getElementById("entryDate").value = entry.entryDate;
+    openModal(true);
+  }
+
+  function deleteEntry(index) {
+    if (confirm("Delete this entry?")) {
       let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-      const index = document.getElementById("editIndex").value;
-      if (index === "") {
-        entries.push(entry);
-      } else {
-        entries[parseInt(index)] = entry;
-      }
+      entries.splice(index, 1);
       localStorage.setItem("timeEntries", JSON.stringify(entries));
-      closeModal();
       loadEntries();
     }
+  }
 
-    function editEntry(index) {
-      const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-      const entry = entries[index];
-      document.getElementById("editIndex").value = index;
-      document.getElementById("entryId").value = entry.entryId;
-      document.getElementById("employeeId").value = entry.employeeId;
-      document.getElementById("clockIn").value = entry.clockIn;
-      document.getElementById("clockOut").value = entry.clockOut;
-      document.getElementById("status").value = entry.status;
-      document.getElementById("entryDate").value = entry.entryDate;
-      openModal(true);
-    }
+  function openModal(isEdit = false) {
+    document.getElementById("entryModal").style.display = "block";
+    document.getElementById("modalTitle").textContent = isEdit ? "Edit Entry" : "Add Entry";
+  }
 
-    function deleteEntry(index) {
-      if (confirm("Delete this entry?")) {
-        let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-        entries.splice(index, 1);
-        localStorage.setItem("timeEntries", JSON.stringify(entries));
-        loadEntries();
-      }
-    }
+  function closeModal() {
+    document.getElementById("entryModal").style.display = "none";
+    document.getElementById("entryForm").reset();
+    document.getElementById("editIndex").value = "";
+  }
 
-    function openModal(isEdit = false) {
-      document.getElementById("entryModal").style.display = "block";
-      document.getElementById("modalTitle").textContent = isEdit ? "Edit Entry" : "Add Entry";
-    }
+  function toggleSubMenu(id) {
+    const submenu = document.getElementById(id);
+    submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+  }
 
-    function closeModal() {
-      document.getElementById("entryModal").style.display = "none";
-      document.getElementById("entryForm").reset();
-      document.getElementById("editIndex").value = "";
-    }
-
-    function confirmLogout() {
-      return confirm("Are you sure you want to log out?");
-   }
-    }
-        function toggleSubMenu(id) {
-            const submenu = document.getElementById(id);
-            if (submenu.style.display === 'none') {
-                submenu.style.display = 'block';
-            } else {
-                submenu.style.display = 'none';
-            }
-        }
-  
-   
-    window.onload = loadEntries;
-  </script>
+  window.onload = loadEntries;
+</script>
 </body>
 </html>
