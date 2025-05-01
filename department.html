@@ -329,7 +329,6 @@
       return confirm("Are you sure you want to log out?");
     }
 
-    
     const departments = [
       { id: 'D001', name: 'Accounting' },
       { id: 'D002', name: 'Operations' },
@@ -389,16 +388,16 @@
         displayDepartments();
       }
     }
-   }
-        function toggleSubMenu(id) {
-            const submenu = document.getElementById(id);
-            if (submenu.style.display === 'none') {
-                submenu.style.display = 'block';
-            } else {
-                submenu.style.display = 'none';
-            }
-        }
-   
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      if (submenu.style.display === 'none') {
+        submenu.style.display = 'block';
+      } else {
+        submenu.style.display = 'none';
+      }
+    }
+
     displayDepartments();
   </script>
 </body>
