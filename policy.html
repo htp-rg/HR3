@@ -120,10 +120,13 @@
       overflow-x: auto;
     }
     .search-bar {
+      display: flex;
+      justify-content: center;
       margin-bottom: 20px;
     }
     .search-bar input {
-      width: 30%;
+      width: 100%;
+      max-width: 400px;
       padding: 10px;
       border-radius: 5px;
       border: 1px solid #ccc;
@@ -146,7 +149,7 @@
       cursor: pointer;
       color: #2c3e50;
     }
-  .dropdown {
+    .dropdown {
       position: relative;
       display: inline-block;
     }
@@ -188,84 +191,83 @@
   </style>
 </head>
 <body>
- <div class="container">
-        <div class="sidebar">
-            <div class="sidebar-top">
-                <img src="admin-avatar.png" alt="admin" class="admin-image">
-                <p style="font-size: 18px; font-weight: bold;">HUMAN RESOURCES 3</p>
-            </div>
-            <div class="sidebar-content">
-                <ul class="sidebar-menu">
-                    <li><a href="dashboard.html">Dashboard</a></li>
-                    <li><a href="#" onclick="toggleSubMenu('timeAttendance')">Time and Attendance</a></li>
-                    <ul id="timeAttendance" style="display:none;">
-                        <li><a href="employee.html">Employee</a></li>
-                        <li><a href="department.html">Department</a></li>
-                        <li><a href="time_entry.html">Time Entry</a></li>
-                        <li><a href="shift.html">Shift</a></li>
-                    </ul>
-                    <li><a href="#" onclick="toggleSubMenu('timesheet')">Timesheet</a></li>
-                    <ul id="timesheet" style="display:none;">
-                        <li><a href="ts_employee.html">Employee</a></li>
-                        <li><a href="ts_setup.html">Timesheet Setup</a></li>
-                        <li><a href="ts_data.html">Timesheet Data Collection</a></li>
-                        <li><a href="ts_validation.html">Timesheet Validation</a></li>
-                        <li><a href="ts_reporting.html">Timesheet Reporting</a></li>
-                    </ul>
-                    <li><a href="#" onclick="toggleSubMenu('claimReimbursement')">Claim and Reimbursement</a></li>
-                    <ul id="claimReimbursement" style="display:none;">
-                        <li><a href="policy.html">Policy</a></li>
-                        <li><a href="claimdata.html">Claim Data</a></li>
-                        <li><a href="configuration.html">Configuration</a></li>
-                        <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
-                    </ul>
-                    <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a></li>
-                    <ul id="leaveManagement" style="display:none;">
-                        <li><a href="lv_employee.html">Employee</a></li>
-                        <li><a href="lv_request.html">Leave Request</a></li>
-                        <li><a href="lv_department.html">Department</a></li>
-                        <li><a href="lv_approval.html">Approval History</a></li>
-                        <li><a href="lv_balance.html">Leave Balance</a></li>
-                        <li><a href="lv_policy.html">Leave Policy</a></li>
-                    </ul>
-                    <li><a href="#" onclick="toggleSubMenu('shiftScheduling')">Shift and Scheduling</a></li>
-                    <ul id="shiftScheduling" style="display:none;">
-                        <li><a href="shift_planning.html">Shift Planning</a></li>
-                        <li><a href="scheduling_management.html">Scheduling Management</a></li>
-                        <li><a href="work_packages.html">Work Packages</a></li>
-                    </ul>
-                    <li><a href="users.html">Users</a></li>
-                    <li><a href="settings.html">Settings</a></li>
-                </ul>
-            </div>
-            <a href="login1.html" class="logout-link" onclick="return confirmLogout();">Log out</a>
-        </div>
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <img src="admin-avatar.png" alt="admin" class="admin-image">
+        <p style="font-size: 18px; font-weight: bold;">HUMAN RESOURCES 3</p>
+      </div>
+      <div class="sidebar-content">
+        <ul class="sidebar-menu">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="#" onclick="toggleSubMenu('timeAttendance')">Time and Attendance</a></li>
+          <ul id="timeAttendance" style="display:none;">
+            <li><a href="employee.html">Employee</a></li>
+            <li><a href="department.html">Department</a></li>
+            <li><a href="time_entry.html">Time Entry</a></li>
+            <li><a href="shift.html">Shift</a></li>
+          </ul>
+          <li><a href="#" onclick="toggleSubMenu('timesheet')">Timesheet</a></li>
+          <ul id="timesheet" style="display:none;">
+            <li><a href="ts_employee.html">Employee</a></li>
+            <li><a href="ts_setup.html">Timesheet Setup</a></li>
+            <li><a href="ts_data.html">Timesheet Data Collection</a></li>
+            <li><a href="ts_validation.html">Timesheet Validation</a></li>
+            <li><a href="ts_reporting.html">Timesheet Reporting</a></li>
+          </ul>
+          <li><a href="#" onclick="toggleSubMenu('claimReimbursement')">Claim and Reimbursement</a></li>
+          <ul id="claimReimbursement" style="display:none;">
+            <li><a href="policy.html">Policy</a></li>
+            <li><a href="claimdata.html">Claim Data</a></li>
+            <li><a href="configuration.html">Configuration</a></li>
+            <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
+          </ul>
+          <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a></li>
+          <ul id="leaveManagement" style="display:none;">
+            <li><a href="lv_employee.html">Employee</a></li>
+            <li><a href="lv_request.html">Leave Request</a></li>
+            <li><a href="lv_department.html">Department</a></li>
+            <li><a href="lv_approval.html">Approval History</a></li>
+            <li><a href="lv_balance.html">Leave Balance</a></li>
+            <li><a href="lv_policy.html">Leave Policy</a></li>
+          </ul>
+          <li><a href="#" onclick="toggleSubMenu('shiftScheduling')">Shift and Scheduling</a></li>
+          <ul id="shiftScheduling" style="display:none;">
+            <li><a href="shift_planning.html">Shift Planning</a></li>
+            <li><a href="scheduling_management.html">Scheduling Management</a></li>
+            <li><a href="work_packages.html">Work Packages</a></li>
+          </ul>
+          <li><a href="users.html">Users</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </div>
+      <a href="login1.html" class="logout-link" onclick="return confirmLogout();">Log out</a>
+    </div>
 
     <div class="content-wrapper">
       <header class="topbar">
         <div class="language">EN</div>
-       <div class="dropdown">
-                    <button class="dropbtn">Quick Access <i class="fas fa-chevron-down"></i></button>
-                    <div class="dropdown-content">
-                        <a href="#">Time In</a>
-                        <a href="add_employee.html">New Employee</a>
-                        <a href="#">Company</a>
-                        <a href="#">Department</a>
-                        <a href="#">Job Title</a>
-                        <a href="#">Leave Type</a>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <button class="dropbtn">Admin <i class="fas fa-chevron-down"></i></button>
-                    <div class="dropdown-content">
-                        <a href="#">Update Account</a>
-                        <a href="#">Change Password</a>
-                        <a href="#">Switch to My Account</a>
-                        <a href="login1.html" onclick="return confirmLogout();">Log out</a>
-                    </div>
-                </div>
-            </header
+        <div class="dropdown">
+          <button class="dropbtn">Quick Access <i class="fas fa-chevron-down"></i></button>
+          <div class="dropdown-content">
+            <a href="#">Time In</a>
+            <a href="add_employee.html">New Employee</a>
+            <a href="#">Company</a>
+            <a href="#">Department</a>
+            <a href="#">Job Title</a>
+            <a href="#">Leave Type</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">Admin <i class="fas fa-chevron-down"></i></button>
+          <div class="dropdown-content">
+            <a href="#">Update Account</a>
+            <a href="#">Change Password</a>
+            <a href="#">Switch to My Account</a>
+            <a href="login1.html" onclick="return confirmLogout();">Log out</a>
+          </div>
+        </div>
+      </header>
 
       <section class="dashboard">
         <div class="search-bar">
@@ -325,16 +327,13 @@
       );
       displayPolicies(filtered);
     }
-}
-        function toggleSubMenu(id) {
-            const submenu = document.getElementById(id);
-            if (submenu.style.display === 'none') {
-                submenu.style.display = 'block';
-            } else {
-                submenu.style.display = 'none';
-            }
-        }
-    displayPolicies();
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+    }
+
+    window.onload = displayPolicies;
   </script>
 </body>
 </html>
