@@ -358,148 +358,66 @@
       </div>
     </header>
 
-    <section class="dashboard">
-      <div class="dashboard-header">
-        <h2>Employee List</h2>
-        <button class="add-button" onclick="window.location.href='add_employee.html'">Add New Employee</button>
-      </div>
-
-      <div class="search-bar">
-        <input type="text" id="searchInput" onkeyup="searchEmployee()" placeholder="Search for employees..">
-      </div>
-
-      <div class="table-section">
-        <h4>Employees</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Company</th>
-              <th>Department</th>
-              <th>Position</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="employeeTableBody"></tbody>
-        </table>
-      </div>
-    </section>
+  
+<section class="dashboard">
+  <div class="dashboard-header">
+    <h2>Department List</h2>
   </div>
 
-  <div id="employeeModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2 id="modalTitle"></h2>
-      <div id="modalContent"></div>
-    </div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" onkeyup="searchDepartment()" placeholder="Search for departments..">
   </div>
 
-  <script>
-    let employees = [
-      { id: '0015', name: 'Feniza, Rogen Mark', company: 'APPLE CORPORATION', department: 'ACCOUNTING', position: 'ACCOUNTING SPECIALIST', status: 'Active' },
-      { id: '0014', name: 'Bermoy, Abegail', company: 'FACEBOOK CORPORATION', department: 'ACCOUNTING', position: 'ACCOUNTING SPECIALIST', status: 'Active' },
-      { id: '0013', name: 'Sabulao, Joana Joy', company: 'MICROSOFT CORPORATION', department: 'OPERATIONS', position: 'OPERATIONS MANAGER', status: 'Active' },
-      { id: '0012', name: 'Tabianan, Jenilyn', company: 'GOOGLE CORPORATION', department: 'MARKETING', position: 'MARKETING MANAGER', status: 'Active' },
-      { id: '0011', name: 'Tribiana, Pablo', company: 'APPLE CORPORATION', department: 'EXECUTIVE', position: 'CHIEF EXECUTIVE OFFICER', status: 'Active' }
-    ];
+  <div class="table-section">
+    <h4>Departments</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Department ID</th>
+          <th>Department Name</th>
+        </tr>
+      </thead>
+      <tbody id="departmentTableBody"></tbody>
+    </table>
+  </div>
+</section>
 
-    function renderTable() {
-      const tableBody = document.getElementById('employeeTableBody');
-      tableBody.innerHTML = '';
-      employees.forEach(employee => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${employee.id}</td>
-          <td>${employee.name}</td>
-          <td>${employee.company}</td>
-          <td>${employee.department}</td>
-          <td>${employee.position}</td>
-          <td>${employee.status}</td>
-          <td class="actions">
-            <i class="fas fa-eye" onclick="viewEmployee('${employee.id}')"></i>
-            <i class="fas fa-edit" onclick="editEmployee('${employee.id}')"></i>
-            <i class="fas fa-trash" onclick="deleteEmployee('${employee.id}')"></i>
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
+<script>
+  const departments = [
+    { id: 'D001', name: 'Accounting' },
+    { id: 'D002', name: 'Operations' },
+    { id: 'D003', name: 'Marketing' },
+    { id: 'D004', name: 'Executives' }
+  ];
 
-    function searchEmployee() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const filteredEmployees = employees.filter(employee =>
-        employee.name.toLowerCase().includes(query) ||
-        employee.position.toLowerCase().includes(query) ||
-        employee.department.toLowerCase().includes(query)
-      );
+  function renderDepartmentTable() {
+    const tableBody = document.getElementById('departmentTableBody');
+    tableBody.innerHTML = '';
+    departments.forEach(dept => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${dept.id}</td><td>${dept.name}</td>`;
+      tableBody.appendChild(row);
+    });
+  }
 
-      const tableBody = document.getElementById('employeeTableBody');
-      tableBody.innerHTML = '';
+  function searchDepartment() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const filteredDepartments = departments.filter(dept =>
+      dept.name.toLowerCase().includes(query) || dept.id.toLowerCase().includes(query)
+    );
 
-      filteredEmployees.forEach(employee => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${employee.id}</td>
-          <td>${employee.name}</td>
-          <td>${employee.company}</td>
-          <td>${employee.department}</td>
-          <td>${employee.position}</td>
-          <td>${employee.status}</td>
-          <td class="actions">
-            <i class="fas fa-eye" onclick="viewEmployee('${employee.id}')"></i>
-            <i class="fas fa-edit" onclick="editEmployee('${employee.id}')"></i>
-            <i class="fas fa-trash" onclick="deleteEmployee('${employee.id}')"></i>
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
+    const tableBody = document.getElementById('departmentTableBody');
+    tableBody.innerHTML = '';
 
-    function viewEmployee(id) {
-      const employee = employees.find(emp => emp.id === id);
-      document.getElementById('modalTitle').innerText = `Employee Details: ${employee.name}`;
-      document.getElementById('modalContent').innerHTML = `
-        <p><strong>ID:</strong> ${employee.id}</p>
-        <p><strong>Company:</strong> ${employee.company}</p>
-        <p><strong>Department:</strong> ${employee.department}</p>
-        <p><strong>Position:</strong> ${employee.position}</p>
-        <p><strong>Status:</strong> ${employee.status}</p>
-      `;
-      document.getElementById('employeeModal').style.display = 'block';
-    }
+    filteredDepartments.forEach(dept => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${dept.id}</td><td>${dept.name}</td>`;
+      tableBody.appendChild(row);
+    });
+  }
 
-    function closeModal() {
-      document.getElementById('employeeModal').style.display = 'none';
-    }
-
-    function editEmployee(id) {
-      window.location.href = `editemployee.html?id=${id}`;
-    }
-
-    function deleteEmployee(id) {
-      const index = employees.findIndex(emp => emp.id === id);
-      if (index !== -1) {
-        const confirmDelete = confirm(`Are you sure you want to delete ${employees[index].name}?`);
-        if (confirmDelete) {
-          employees.splice(index, 1);
-          renderTable();
-        }
-      }
-    }
-
-    function confirmLogout() {
-      return confirm("Are you sure you want to log out?");
-    }
-
-    function toggleSubMenu(id) {
-      const submenu = document.getElementById(id);
-      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
-    }
-
-    window.onload = renderTable;
-  </script>
+  window.onload = renderDepartmentTable;
+</script>
 </body>
 </html>
 
