@@ -347,29 +347,20 @@
   </div>
 
   <script>
-  window.onload = function () {
-    loadEntries();
-  };
-
-  function loadEntries() {
-    const entries = JSON.parse(localStorage.getItem('timeEntries')) || [];
-    const table = document.getElementById('timeEntryTable');
-    table.innerHTML = ''; // Clear existing rows
-    entries.forEach((entry, index) => {
-      const row = table.insertRow();
-      row.innerHTML = `
-        <td>${entry.entryId}</td>
-        <td>${entry.employeeId}</td>
-        <td>${entry.clockIn}</td>
-        <td>${entry.clockOut}</td>
-        <td>${entry.status}</td>
-        <td>${entry.entryDate}</td>
-        <td class="actions">
-          <i class="fas fa-edit" onclick="editEntry(this)"></i>
-          <i class="fas fa-trash" onclick="deleteEntry(this)"></i>
-        </td>
-      `;
-    });
+ window.onload = function () {
+  const existing = JSON.parse(localStorage.getItem('timeEntries'));
+  if (!existing || existing.length === 0) {
+    const defaultEntries = [
+      { entryId: "001", employeeId: "0015", clockIn: "09:00 AM", clockOut: "05:00 PM", status: "Active", entryDate: "2025-05-01" },
+      { entryId: "002", employeeId: "0016", clockIn: "08:30 AM", clockOut: "04:30 PM", status: "Active", entryDate: "2025-05-01" },
+      { entryId: "003", employeeId: "0017", clockIn: "10:00 AM", clockOut: "06:00 PM", status: "Late", entryDate: "2025-05-01" },
+      { entryId: "004", employeeId: "0018", clockIn: "09:15 AM", clockOut: "05:15 PM", status: "Active", entryDate: "2025-05-01" },
+      { entryId: "005", employeeId: "0019", clockIn: "09:00 AM", clockOut: "05:00 PM", status: "On Leave", entryDate: "2025-05-01" }
+    ];
+    localStorage.setItem('timeEntries', JSON.stringify(defaultEntries));
+  }
+  loadEntries();
+};
   }
 
   function saveEntry(event) {
