@@ -406,7 +406,7 @@
 <script>
   function loadEntries() {
     const table = document.getElementById("timeEntryTable");
-    table.innerHTML = "";
+    table.innerHTML = ""; 
     const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
     entries.forEach((entry, index) => {
       const row = table.insertRow();
@@ -428,7 +428,7 @@
   function editEntry(index) {
     const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
     const entry = entries[index];
-    
+
     
     document.getElementById("editIndex").value = index;
     document.getElementById("entryId").value = entry.entryId;
@@ -438,8 +438,7 @@
     document.getElementById("status").value = entry.status;
     document.getElementById("entryDate").value = entry.entryDate;
 
-    
-    openModal(true);
+    openModal(true); 
   }
 
   function saveEntry(event) {
@@ -455,38 +454,39 @@
     };
 
     let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-    const index = document.getElementById("editIndex").value; // Get the edit index
+    const index = document.getElementById("editIndex").value; 
 
-    
     if (index === "") {
-      entries.push(entry); 
+      
+      entries.push(entry);
     } else {
-      entries[parseInt(index)] = entry; 
+      
+      entries[parseInt(index)] = entry;
     }
 
-    localStorage.setItem("timeEntries", JSON.stringify(entries));
+    localStorage.setItem("timeEntries", JSON.stringify(entries)); 
 
-    closeModal();
-    loadEntries();
+    closeModal(); 
+    loadEntries(); 
   }
 
   function deleteEntry(index) {
     if (confirm("Delete this entry?")) {
       let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-      entries.splice(index, 1);
-      localStorage.setItem("timeEntries", JSON.stringify(entries));
-      loadEntries();
+      entries.splice(index, 1); 
+      localStorage.setItem("timeEntries", JSON.stringify(entries)); 
+      loadEntries(); 
     }
   }
 
   function openModal(isEdit = false) {
-    document.getElementById("entryModal").style.display = "block";
-    document.getElementById("modalTitle").textContent = isEdit ? "Edit Entry" : "Add Entry";
+    document.getElementById("entryModal").style.display = "block"; 
+    document.getElementById("modalTitle").textContent = isEdit ? "Edit Entry" : "Add Entry"; 
   }
 
   function closeModal() {
-    document.getElementById("entryModal").style.display = "none";
-    document.getElementById("entryForm").reset();
+    document.getElementById("entryModal").style.display = "none"; 
+    document.getElementById("entryForm").reset(); 
     document.getElementById("editIndex").value = "";
   }
 
@@ -496,8 +496,7 @@
   }
 
   window.onload = () => {
-    if (localStorage.getItem("timeEntries")) {
-      loadEntries();
-    }
+    loadEntries(); // Load entries when the page loads
   };
 </script>
+
