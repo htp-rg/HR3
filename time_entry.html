@@ -428,10 +428,19 @@
     </section>
   </div>
 
-  <script>
-    function confirmLogout() {
-      return confirm("Are you sure you want to log out?");
+<script>
+  function confirmLogout() {
+    return confirm("Are you sure you want to log out?");
+  }
+
+  function toggleSubMenu(menuId) {
+    var submenu = document.getElementById(menuId);
+    if (submenu.style.display === "none" || submenu.style.display === "") {
+      submenu.style.display = "block";
+    } else {
+      submenu.style.display = "none";
     }
-  </script>
+  }
+</script>
 </body>
 </html>
