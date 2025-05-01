@@ -311,8 +311,8 @@
     <td>Active</td>
     <td>2025-05-01</td>
     <td class="actions">
-      <i class="fas fa-edit" onclick="editEntry(this)"></i>
-      <i class="fas fa-trash" onclick="deleteEntry(this)"></i>
+      <i class="fas fa-edit" onclick="editEntry(1)"></i>
+      <i class="fas fa-trash" onclick="deleteEntry(1)"></i>
     </td>
   </tr>
   <tr>
@@ -323,8 +323,8 @@
     <td>Active</td>
     <td>2025-05-01</td>
     <td class="actions">
-      <i class="fas fa-edit" onclick="editEntry(this)"></i>
-      <i class="fas fa-trash" onclick="deleteEntry(this)"></i>
+      <i class="fas fa-edit" onclick="editEntry(2)"></i>
+      <i class="fas fa-trash" onclick="deleteEntry(2)"></i>
     </td>
   </tr>
   <tr>
@@ -335,8 +335,8 @@
     <td>Active</td>
     <td>2025-05-01</td>
     <td class="actions">
-      <i class="fas fa-edit" onclick="editEntry(this)"></i>
-      <i class="fas fa-trash" onclick="deleteEntry(this)"></i>
+      <i class="fas fa-edit" onclick="editEntry(3)"></i>
+      <i class="fas fa-trash" onclick="deleteEntry(3)"></i>
     </td>
   </tr>
   <tr>
@@ -347,8 +347,8 @@
     <td>Active</td>
     <td>2025-05-01</td>
     <td class="actions">
-      <i class="fas fa-edit" onclick="editEntry(this)"></i>
-      <i class="fas fa-trash" onclick="deleteEntry(this)"></i>
+      <i class="fas fa-edit" onclick="editEntry(4)"></i>
+      <i class="fas fa-trash" onclick="deleteEntry(4)"></i>
     </td>
   </tr>
   <tr>
@@ -359,8 +359,8 @@
     <td>Active</td>
     <td>2025-05-01</td>
     <td class="actions">
-      <i class="fas fa-edit" onclick="editEntry(this)"></i>
-      <i class="fas fa-trash" onclick="deleteEntry(this)"></i>
+      <i class="fas fa-edit" onclick="editEntry(5)"></i>
+      <i class="fas fa-trash" onclick="deleteEntry(5)"></i>
     </td>
   </tr>
 </tbody>
@@ -448,17 +448,17 @@
   }
 
   function editEntry(index) {
-    const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-    const entry = entries[index];
-    document.getElementById("editIndex").value = index;
-    document.getElementById("entryId").value = entry.entryId;
-    document.getElementById("employeeId").value = entry.employeeId;
-    document.getElementById("clockIn").value = entry.clockIn;
-    document.getElementById("clockOut").value = entry.clockOut;
-    document.getElementById("status").value = entry.status;
-    document.getElementById("entryDate").value = entry.entryDate;
-    openModal(true);
-  }
+  const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+  const entry = entries[index];
+  document.getElementById("editIndex").value = index;
+  document.getElementById("entryId").value = entry.entryId;
+  document.getElementById("employeeId").value = entry.employeeId;
+  document.getElementById("clockIn").value = entry.clockIn;
+  document.getElementById("clockOut").value = entry.clockOut;
+  document.getElementById("status").value = entry.status;
+  document.getElementById("entryDate").value = entry.entryDate;
+  openModal(true);
+}
 
   function deleteEntry(index) {
     if (confirm("Delete this entry?")) {
