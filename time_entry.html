@@ -405,12 +405,13 @@
 
 <script>
   function loadEntries() {
-    const table = document.getElementById("timeEntryTable");
-    table.innerHTML = ""; 
-    const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-    entries.forEach((entry, index) => {
-      const row = table.insertRow();
-      row.innerHTML = `
+  const table = document.getElementById("timeEntryTable");
+  table.innerHTML = ""; 
+  const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+  console.log("Entries loaded:", entries); 
+  entries.forEach((entry, index) => {
+    const row = table.insertRow();
+    row.innerHTML `
         <td>${entry.entryId}</td>
         <td>${entry.employeeId}</td>
         <td>${entry.clockIn}</td>
