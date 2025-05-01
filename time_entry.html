@@ -426,54 +426,49 @@
   }
 
   function editEntry(index) {
-  const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-  const entry = entries[index];
+    const entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+    const entry = entries[index];
+    
+    
+    document.getElementById("editIndex").value = index;
+    document.getElementById("entryId").value = entry.entryId;
+    document.getElementById("employeeId").value = entry.employeeId;
+    document.getElementById("clockIn").value = entry.clockIn;
+    document.getElementById("clockOut").value = entry.clockOut;
+    document.getElementById("status").value = entry.status;
+    document.getElementById("entryDate").value = entry.entryDate;
 
-  
-  document.getElementById("editIndex").value = index;
-
- 
-  document.getElementById("entryId").value = entry.entryId;
-  document.getElementById("employeeId").value = entry.employeeId;
-  document.getElementById("clockIn").value = entry.clockIn;
-  document.getElementById("clockOut").value = entry.clockOut;
-  document.getElementById("status").value = entry.status;
-  document.getElementById("entryDate").value = entry.entryDate;
-
-  
-  openModal(true);
-}
-
-function saveEntry(event) {
-  event.preventDefault();
-
-  
-  const entry = {
-    entryId: document.getElementById("entryId").value,
-    employeeId: document.getElementById("employeeId").value,
-    clockIn: document.getElementById("clockIn").value,
-    clockOut: document.getElementById("clockOut").value,
-    status: document.getElementById("status").value,
-    entryDate: document.getElementById("entryDate").value
-  };
-
- 
-  let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
-  const index = document.getElementById("editIndex").value; // Get the edit index
-
-  
-  if (index === "") {
-    entries.push(entry); 
-  } else {
-    entries[parseInt(index)] = entry; 
+    
+    openModal(true);
   }
 
+  function saveEntry(event) {
+    event.preventDefault();
 
-  localStorage.setItem("timeEntries", JSON.stringify(entries));
+    const entry = {
+      entryId: document.getElementById("entryId").value,
+      employeeId: document.getElementById("employeeId").value,
+      clockIn: document.getElementById("clockIn").value,
+      clockOut: document.getElementById("clockOut").value,
+      status: document.getElementById("status").value,
+      entryDate: document.getElementById("entryDate").value
+    };
 
-  
-  closeModal();
-  loadEntries();
+    let entries = JSON.parse(localStorage.getItem("timeEntries")) || [];
+    const index = document.getElementById("editIndex").value; // Get the edit index
+
+    
+    if (index === "") {
+      entries.push(entry); 
+    } else {
+      entries[parseInt(index)] = entry; 
+    }
+
+    localStorage.setItem("timeEntries", JSON.stringify(entries));
+
+    closeModal();
+    loadEntries();
+  }
 
   function deleteEntry(index) {
     if (confirm("Delete this entry?")) {
@@ -500,11 +495,9 @@ function saveEntry(event) {
     submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
   }
 
- window.onload = () => {
-  if (localStorage.getItem("timeEntries")) {
-    loadEntries();
-  }
-};
+  window.onload = () => {
+    if (localStorage.getItem("timeEntries")) {
+      loadEntries();
+    }
+  };
 </script>
-</body>
-</html>
