@@ -383,9 +383,30 @@
   }
 
   function editShift(id) {
-    alert('Redirect to edit shift page for ID: ' + id);
-    // Example: window.location.href = `editshift.html?id=${id}`;
-  }
+  const shift = shifts.find(s => s.id === id);
+  document.getElementById('modalTitle').innerText = `Edit Shift: ${shift.shift}`;
+  document.getElementById('modalContent').innerHTML = `
+    <form id="editShiftForm">
+      <label for="shiftName">Shift Time:</label><br>
+      <input type="text" id="shiftName" value="${shift.shift}" required><br><br>
+      <label for="startTime">Start Time:</label><br>
+      <input type="time" id="startTime" value="${convertTo24Hour(shift.start)}" required><br><br>
+      <label for="endTime">End Time:</label><br>
+      <input type="time" id="endTime" value="${convertTo24Hour(shift.end)}" required><br><br>
+      <button type="submit">Save Changes</button>
+    </form>
+  `;
+  document.getElementById('shiftModal').style.display = 'block';
+
+  document.getElementById('editShiftForm').onsubmit = function(e) {
+    e.preventDefault();
+    shift.shift = document.getElementById('shiftName').value;
+    shift.start = convertTo12Hour(document.getElementById('startTime').value);
+    shift.end = convertTo12Hour(document.getElementById('endTime').value);
+    closeModal();
+    displayShifts();
+  };
+}
 
   function deleteShift(id) {
     const index = shifts.findIndex(s => s.id === id);
@@ -402,6 +423,20 @@
                 submenu.style.display = 'none';
             }
         }
+  function convertTo24Hour(timeStr) {
+  const [time, modifier] = timeStr.split(' ');
+  let [hours, minutes] = time.split(':');
+  if (modifier === 'PM' && hours !== '12') hours = parseInt(hours) + 12;
+  if (modifier === 'AM' && hours === '12') hours = '00';
+  return `${hours.padStart(2, '0')}:${minutes}`;
+}
+
+function convertTo12Hour(timeStr) {
+  let [hours, minutes] = timeStr.split(':');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12;
+  return `${hours}:${minutes} ${ampm}`;
+}
   displayShifts();
 </script>
 </body>
