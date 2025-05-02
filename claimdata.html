@@ -188,47 +188,38 @@
     .dropdown:hover .dropdown-content {
       display: block;
     }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 200;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      justify-content: center;
-      align-items: center;
-    }
     .modal-content {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      width: 400px;
-      position: relative;
-    }
-    .close {
-      position: absolute;
-      right: 15px;
-      top: 10px;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .add-form input, .add-form select, .add-form button {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
-      font-size: 14px;
-    }
-    .add-form button {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    .add-form button:hover {
-      background-color: #2980b9;
-    }
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 600px; /* wider to match table */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.add-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* two-column layout */
+  gap: 15px;
+}
+
+.add-form input,
+.add-form select,
+.add-form button {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.add-form button {
+  grid-column: span 2; /* make button full width */
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
@@ -310,7 +301,7 @@
         </div>
       </header>
 
- <section class="dashboard">
+  <section class="dashboard">
         <div class="search-bar">
           <input type="text" id="searchInput" onkeyup="searchClaims()" placeholder="Search claims..." />
         </div>
@@ -400,12 +391,14 @@
 
     function openAddModal() {
       document.getElementById('claimModal').style.display = 'flex';
-      document.querySelector('.add-form').reset();
-      editIndex = null;
+      if (editIndex === null) {
+        document.querySelector('.add-form').reset();
+      }
     }
 
     function closeModal() {
       document.getElementById('claimModal').style.display = 'none';
+      editIndex = null;
     }
 
     function addClaim(event) {
@@ -449,6 +442,13 @@
       if (confirm("Are you sure you want to delete this claim?")) {
         claims.splice(index, 1);
         displayClaims();
+      }
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('claimModal');
+      if (event.target === modal) {
+        closeModal();
       }
     }
 
