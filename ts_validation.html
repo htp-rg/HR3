@@ -171,6 +171,29 @@
     .dropdown:hover .dropdown-content {
       display: block;
     }
+    .action-buttons {
+      margin: 10px 0;
+    }
+    .action-buttons button {
+      padding: 8px 12px;
+      margin-right: 8px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+    .action-buttons button:hover {
+      background-color: #2980b9;
+    }
+    .edit-btn, .delete-btn {
+      cursor: pointer;
+      margin-right: 8px;
+      color: #3498db;
+    }
+    .edit-btn:hover, .delete-btn:hover {
+      color: #2c3e50;
+    }
   </style>
 </head>
 <body>
@@ -253,9 +276,12 @@
         </div>
       </header>
 
-      <section class="dashboard">
+       <section class="dashboard">
         <div class="table-section">
           <h4>Timesheet Validations</h4>
+          <div class="action-buttons">
+            <button onclick="addNewValidation()">New</button>
+          </div>
           <table>
             <thead>
               <tr>
@@ -263,6 +289,7 @@
                 <th>Comments</th>
                 <th>Validation ID</th>
                 <th>Timesheet ID</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="validationTableBody"></tbody>
@@ -273,16 +300,7 @@
   </div>
 
   <script>
-    function confirmLogout() {
-      return confirm("Are you sure you want to log out?");
-    }
-
-    function toggleSubMenu(id) {
-      const submenu = document.getElementById(id);
-      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
-    }
-
-    const validations = [
+    let validations = [
       { status: 'Approved', comments: 'Validated successfully', validationId: 'V001', timesheetId: 'TS001' },
       { status: 'Pending', comments: 'Awaiting supervisor check', validationId: 'V002', timesheetId: 'TS002' },
       { status: 'Rejected', comments: 'Incorrect time entries', validationId: 'V003', timesheetId: 'TS003' },
@@ -293,16 +311,72 @@
     function displayValidations() {
       const tbody = document.getElementById('validationTableBody');
       tbody.innerHTML = '';
-      validations.forEach(val => {
+      validations.forEach((val, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${val.status}</td>
-          <td>${val.comments}</td>
-          <td>${val.validationId}</td>
-          <td>${val.timesheetId}</td>
+          <td contenteditable="false">${val.status}</td>
+          <td contenteditable="false">${val.comments}</td>
+          <td contenteditable="false">${val.validationId}</td>
+          <td contenteditable="false">${val.timesheetId}</td>
+          <td>
+            <span class="edit-btn" onclick="editValidation(this, ${index})"><i class="fas fa-edit"></i> Edit</span>
+            <span class="delete-btn" onclick="deleteValidation(${index})"><i class="fas fa-trash"></i> Delete</span>
+          </td>
         `;
         tbody.appendChild(row);
       });
+    }
+
+    function addNewValidation() {
+      validations.push({
+        status: 'New',
+        comments: '',
+        validationId: 'V' + String(validations.length + 1).padStart(3, '0'),
+        timesheetId: 'TS' + String(validations.length + 1).padStart(3, '0')
+      });
+      displayValidations();
+    }
+
+    function editValidation(btn, index) {
+      const row = btn.closest('tr');
+      const cells = row.querySelectorAll('td');
+      const isEditing = btn.innerHTML.includes('Save');
+
+      if (isEditing) {
+        
+        validations[index] = {
+          status: cells[0].textContent.trim(),
+          comments: cells[1].textContent.trim(),
+          validationId: cells[2].textContent.trim(),
+          timesheetId: cells[3].textContent.trim()
+        };
+        cells.forEach((cell, idx) => {
+          if (idx < 4) cell.contentEditable = "false";
+        });
+        btn.innerHTML = '<i class="fas fa-edit"></i> Edit';
+      } else {
+        
+        cells.forEach((cell, idx) => {
+          if (idx < 4) cell.contentEditable = "true";
+        });
+        btn.innerHTML = '<i class="fas fa-save"></i> Save';
+      }
+    }
+
+    function deleteValidation(index) {
+      if (confirm("Are you sure you want to delete this validation?")) {
+        validations.splice(index, 1);
+        displayValidations();
+      }
+    }
+
+    function confirmLogout() {
+      return confirm("Are you sure you want to log out?");
+    }
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
     }
 
     displayValidations();
