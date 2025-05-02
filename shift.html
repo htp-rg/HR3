@@ -297,6 +297,7 @@
       <div class="search-bar">
         <input type="text" id="searchInput" onkeyup="searchShift()" placeholder="Search for shifts.." />
       </div>
+      <button onclick="openAddShiftModal()" style="margin-bottom: 20px; padding: 10px 15px; border: none; background-color: #3498db; color: white; border-radius: 5px; cursor: pointer;">Add Shift</button>
       <div class="table-section">
         <h4>SHIFTS</h4>
         <table>
@@ -441,6 +442,37 @@ function convertTo12Hour(timeStr) {
   const ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12 || 12;
   return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+}
+  function closeModal() {
+  document.getElementById('shiftModal').style.display = 'none';
+}
+  function openAddShiftModal() {
+  document.getElementById('modalTitle').innerText = 'Add New Shift';
+  document.getElementById('modalContent').innerHTML = `
+    <form id="addShiftForm">
+      <label>Shift Name:</label><br>
+      <input type="text" id="shiftName" required><br><br>
+      <label>Start Time:</label><br>
+      <input type="time" id="startTime" required><br><br>
+      <label>End Time:</label><br>
+      <input type="time" id="endTime" required><br><br>
+      <button type="submit">Add</button>
+    </form>
+  `;
+  document.getElementById('shiftModal').style.display = 'block';
+
+  document.getElementById('addShiftForm').onsubmit = function (e) {
+    e.preventDefault();
+    const newShift = {
+      id: `S${(shifts.length + 1).toString().padStart(3, '0')}`,
+      shift: document.getElementById('shiftName').value,
+      start: convertTo12Hour(document.getElementById('startTime').value),
+      end: convertTo12Hour(document.getElementById('endTime').value)
+    };
+    shifts.push(newShift);
+    closeModal();
+    displayShifts();
+  };
 }
   displayShifts();
 </script>
