@@ -358,6 +358,7 @@
       { id: '0011', name: 'Tribiana, Pablo', company: 'APPLE CORPORATION', department: 'EXECUTIVE', position: 'CHIEF EXECUTIVE OFFICER', status: 'Active' }
     ];
 
+    
     function displayEmployees(list = employees) {
       const tableBody = document.getElementById('employeeTableBody');
       tableBody.innerHTML = '';
@@ -380,6 +381,7 @@
       });
     }
 
+    
     function searchEmployee() {
       const query = document.getElementById('searchInput').value.toLowerCase();
       const filtered = employees.filter(e =>
@@ -390,6 +392,7 @@
       displayEmployees(filtered);
     }
 
+    
     function viewEmployee(id) {
       const emp = employees.find(e => e.id === id);
       document.getElementById('modalTitle').innerText = `Employee Details: ${emp.name}`;
@@ -403,10 +406,12 @@
       document.getElementById('employeeModal').style.display = 'block';
     }
 
+    n
     function closeModal() {
       document.getElementById('employeeModal').style.display = 'none';
     }
 
+    
     function editEmployee(id) {
       const emp = employees.find(e => e.id === id);
       editMode = true;
@@ -420,6 +425,7 @@
       document.getElementById('employeeModal').style.display = 'block';
     }
 
+    
     function deleteEmployee(id) {
       const index = employees.findIndex(e => e.id === id);
       if (index !== -1 && confirm("Are you sure you want to delete this employee?")) {
@@ -428,13 +434,13 @@
       }
     }
 
+    
     function toggleSubMenu(id) {
-        const submenu = document.getElementById(id);
-        submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+      const submenu = document.getElementById(id);
+      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
     }
 
-    let editMode = false;
-
+    
     function openAddModal() {
       editMode = false;
       document.getElementById('modalTitle').innerText = 'Add New Employee';
@@ -447,6 +453,7 @@
       document.getElementById('employeeModal').style.display = 'block';
     }
 
+    
     document.getElementById('employeeForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const id = document.getElementById('empId').value.trim();
@@ -472,7 +479,15 @@
       displayEmployees();
     });
 
+    
     displayEmployees();
+
+   
+    window.onclick = function(event) {
+      if (event.target === document.getElementById('employeeModal')) {
+        closeModal();
+      }
+    };
   </script>
 </body>
 </html>
