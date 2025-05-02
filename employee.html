@@ -297,7 +297,9 @@
         <div class="search-bar">
           <input type="text" id="searchInput" onkeyup="searchEmployee()" placeholder="Search for employees.." />
         </div>
-
+<button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+  Add Employee
+</button>
         <div class="table-section">
           <h4>Employees</h4>
           <table>
@@ -320,12 +322,20 @@
   </div>
 
   <div id="employeeModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2 id="modalTitle"></h2>
-      <div id="modalContent"></div>
-    </div>
-  </div>
+    <form id="employeeForm">
+  <input type="hidden" id="empId" />
+  <p><label>Name:<br><input type="text" id="empName" required></label></p>
+  <p><label>Company:<br><input type="text" id="empCompany" required></label></p>
+  <p><label>Department:<br><input type="text" id="empDepartment" required></label></p>
+  <p><label>Position:<br><input type="text" id="empPosition" required></label></p>
+  <p><label>Status:<br>
+    <select id="empStatus">
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select></label>
+  </p>
+  <button type="submit" style="padding: 10px 20px; background-color: #2ecc71; color: white; border: none; border-radius: 5px;">Save</button>
+</form>
 
   <script>
     function confirmLogout() {
@@ -408,7 +418,61 @@
                 submenu.style.display = 'none';
             }
         }
-   
+   let editMode = false;
+
+  function openAddModal() {
+    editMode = false;
+    document.getElementById('modalTitle').innerText = 'Add New Employee';
+    document.getElementById('empId').value = '';
+    document.getElementById('empName').value = '';
+    document.getElementById('empCompany').value = '';
+    document.getElementById('empDepartment').value = '';
+    document.getElementById('empPosition').value = '';
+    document.getElementById('empStatus').value = 'Active';
+    document.getElementById('employeeModal').style.display = 'block';
+  }
+
+  function editEmployee(id) {
+    const emp = employees.find(e => e.id === id);
+    editMode = true;
+    document.getElementById('modalTitle').innerText = `Edit Employee: ${emp.name}`;
+    document.getElementById('empId').value = emp.id;
+    document.getElementById('empName').value = emp.name;
+    document.getElementById('empCompany').value = emp.company;
+    document.getElementById('empDepartment').value = emp.department;
+    document.getElementById('empPosition').value = emp.position;
+    document.getElementById('empStatus').value = emp.status;
+    document.getElementById('employeeModal').style.display = 'block';
+  }
+
+  document.getElementById('employeeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const id = document.getElementById('empId').value.trim();
+    const name = document.getElementById('empName').value.trim();
+    const company = document.getElementById('empCompany').value.trim();
+    const department = document.getElementById('empDepartment').value.trim();
+    const position = document.getElementById('empPosition').value.trim();
+    const status = document.getElementById('empStatus').value;
+
+    if (editMode && id) {
+      const emp = employees.find(e => e.id === id);
+      emp.name = name;
+      emp.company = company;
+      emp.department = department;
+      emp.position = position;
+      emp.status = status;
+    } else {
+      const newId = String(Math.max(...employees.map(e => parseInt(e.id))) + 1).padStart(4, '0');
+      employees.push({ id: newId, name, company, department, position, status });
+    }
+
+    closeModal();
+    displayEmployees();
+  });
+
+  function closeModal() {
+    document.getElementById('employeeModal').style.display = 'none';
+  }
     displayEmployees();
   </script>
 </body>
