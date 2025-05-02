@@ -269,23 +269,31 @@
         </div>
       </header>
 
-<section class="dashboard">
+ <section class="dashboard">
         <div class="search-bar">
           <input type="text" id="searchInput" onkeyup="searchClaims()" placeholder="Search claims..." />
         </div>
 
-        <form class="add-form" onsubmit="addClaim(event)">
-          <input type="text" id="claimId" placeholder="Claim ID" required />
-          <input type="date" id="claimDate" required />
-          <input type="number" id="claimAmount" placeholder="Claim Amount" required />
-          <select id="claimStatus">
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-          <input type="number" id="approvedAmount" placeholder="Approved Amount" required />
-          <button type="submit">Add Claim</button>
-        </form>
+        <button onclick="openModal()">+ Add Claim</button>
+
+        
+        <div id="claimModal" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form class="add-form" onsubmit="addClaim(event)">
+              <input type="text" id="claimId" placeholder="Claim ID" required />
+              <input type="date" id="claimDate" required />
+              <input type="number" id="claimAmount" placeholder="Claim Amount" required />
+              <select id="claimStatus">
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+              <input type="number" id="approvedAmount" placeholder="Approved Amount" required />
+              <button type="submit">Add Claim</button>
+            </form>
+          </div>
+        </div>
 
         <div class="table-section">
           <h4>Claim Data</h4>
@@ -357,14 +365,20 @@
       claims.push({ id, date, amount, status, approvedAmount });
       displayClaims();
       event.target.reset();
+      closeModal();
     }
 
-    function toggleSubMenu(id) {
-      const submenu = document.getElementById(id);
-      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+    function openModal() {
+      document.getElementById('claimModal').style.display = 'flex';
     }
 
-    document.addEventListener("DOMContentLoaded", displayClaims);
+    function closeModal() {
+      document.getElementById('claimModal').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      displayClaims();
+    });
   </script>
 </body>
 </html>
