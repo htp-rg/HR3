@@ -1,1 +1,101 @@
 
+
+<section class="dashboard">
+        <div class="search-bar">
+          <input type="text" id="searchInput" onkeyup="searchClaims()" placeholder="Search claims..." />
+        </div>
+
+        <form class="add-form" onsubmit="addClaim(event)">
+          <input type="text" id="claimId" placeholder="Claim ID" required />
+          <input type="date" id="claimDate" required />
+          <input type="number" id="claimAmount" placeholder="Claim Amount" required />
+          <select id="claimStatus">
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <input type="number" id="approvedAmount" placeholder="Approved Amount" required />
+          <button type="submit">Add Claim</button>
+        </form>
+
+        <div class="table-section">
+          <h4>Claim Data</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Claim Data ID</th>
+                <th>Claim Data Date</th>
+                <th>Claim Amount</th>
+                <th>Status</th>
+                <th>Approved Amount</th>
+              </tr>
+            </thead>
+            <tbody id="claimTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const claims = [
+      { id: 'C001', date: '2024-03-15', amount: 500.00, status: 'Approved', approvedAmount: 500.00 },
+      { id: 'C002', date: '2024-04-01', amount: 1200.00, status: 'Pending', approvedAmount: 0 },
+      { id: 'C003', date: '2024-04-10', amount: 300.00, status: 'Rejected', approvedAmount: 0 },
+      { id: 'C004', date: '2024-04-20', amount: 800.00, status: 'Approved', approvedAmount: 750.00 },
+      { id: 'C005', date: '2024-04-25', amount: 150.00, status: 'Pending', approvedAmount: 0 }
+    ];
+
+    function displayClaims(list = claims) {
+      const tbody = document.getElementById('claimTableBody');
+      tbody.innerHTML = '';
+      list.forEach(claim => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${claim.id}</td>
+          <td>${claim.date}</td>
+          <td>$${claim.amount.toFixed(2)}</td>
+          <td>${claim.status}</td>
+          <td>$${claim.approvedAmount.toFixed(2)}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function searchClaims() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = claims.filter(c =>
+        c.id.toLowerCase().includes(query) ||
+        c.date.includes(query) ||
+        c.status.toLowerCase().includes(query)
+      );
+      displayClaims(filtered);
+    }
+
+    function addClaim(event) {
+      event.preventDefault();
+      const id = document.getElementById('claimId').value.trim();
+      const date = document.getElementById('claimDate').value;
+      const amount = parseFloat(document.getElementById('claimAmount').value);
+      const status = document.getElementById('claimStatus').value;
+      const approvedAmount = parseFloat(document.getElementById('approvedAmount').value);
+
+      if (!id || !date || isNaN(amount) || isNaN(approvedAmount)) {
+        alert('Please fill in all fields correctly.');
+        return;
+      }
+
+      claims.push({ id, date, amount, status, approvedAmount });
+      displayClaims();
+      event.target.reset();
+    }
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", displayClaims);
+  </script>
+</body>
+</html>
