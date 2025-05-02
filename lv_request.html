@@ -300,3 +300,201 @@
                     </div>
                 </div>
             </header>
+      <section class="dashboard">
+        <div class="search-bar">
+          <input type="text" id="searchInput" onkeyup="searchLeave()" placeholder="Search for leave requests.." />
+        </div>
+        <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Add Leave Request
+        </button>
+        <div class="table-section">
+          <h4>Leave Requests</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Leave ID</th>
+                <th>Leave Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Request Date</th>
+                <th>Approval Date</th>
+                <th>Total Days</th>
+                <th>Rejection Reason</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leaveTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="leaveModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h4 id="modalTitle"></h4>
+      <form id="leaveForm">
+        <input type="hidden" id="leaveId" />
+        <p><label>Employee ID:<br><input type="text" id="empId" required></label></p>
+        <p><label>Leave Type ID:<br><input type="text" id="leaveTypeId" required></label></p>
+        <p><label>Start Date:<br><input type="date" id="startDate" required></label></p>
+        <p><label>End Date:<br><input type="date" id="endDate" required></label></p>
+        <p><label>Status:<br>
+          <select id="leaveStatus">
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select></label>
+        </p>
+        <p><label>Rejection Reason:<br><textarea id="rejectionReason"></textarea></label></p>
+        <button type="submit" style="padding: 10px 20px; background-color: #2ecc71; color: white; border: none; border-radius: 5px;">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let editMode = false;  
+
+    function confirmLogout() {
+      return confirm("Are you sure you want to log out?");
+    }
+
+    const leaveRequests = [
+      { employeeId: 'E001', leaveId: 'L001', leaveType: 'Sick Leave', startDate: '2025-05-01', endDate: '2025-05-03', status: 'Approved', requestDate: '2025-04-28', approvalDate: '2025-04-29', totalDays: 3, rejectionReason: '' },
+      { employeeId: 'E002', leaveId: 'L002', leaveType: 'Vacation', startDate: '2025-06-01', endDate: '2025-06-05', status: 'Pending', requestDate: '2025-05-10', approvalDate: '', totalDays: 5, rejectionReason: '' },
+      // Add more leave requests as needed
+    ];
+
+    function displayLeaveRequests(list = leaveRequests) {
+      const tableBody = document.getElementById('leaveTableBody');
+      tableBody.innerHTML = '';
+      list.forEach(leave => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${leave.employeeId}</td>
+          <td>${leave.leaveId}</td>
+          <td>${leave.leaveType}</td>
+          <td>${leave.startDate}</td>
+          <td>${leave.endDate}</td>
+          <td>${leave.status}</td>
+          <td>${leave.requestDate}</td>
+          <td>${leave.approvalDate || ''}</td>
+          <td>${leave.totalDays}</td>
+          <td>${leave.rejectionReason || ''}</td>
+          <td class="actions">
+            <i class="fas fa-eye" onclick="viewLeave('${leave.leaveId}')"></i>
+            <i class="fas fa-edit" onclick="editLeave('${leave.leaveId}')"></i>
+            <i class="fas fa-trash" onclick="deleteLeave('${leave.leaveId}')"></i>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function openAddModal() {
+      editMode = false;
+      document.getElementById('modalTitle').innerText = 'Add Leave Request';
+      document.getElementById('leaveId').value = '';
+      document.getElementById('empId').value = '';
+      document.getElementById('leaveTypeId').value = '';
+      document.getElementById('startDate').value = '';
+      document.getElementById('endDate').value = '';
+      document.getElementById('leaveStatus').value = 'Pending';
+      document.getElementById('rejectionReason').value = '';
+      document.getElementById('leaveModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('leaveModal').style.display = 'none';
+    }
+
+    document.getElementById('leaveForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const leaveId = document.getElementById('leaveId').value.trim();
+      const employeeId = document.getElementById('empId').value.trim();
+      const leaveTypeId = document.getElementById('leaveTypeId').value.trim();
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+      const status = document.getElementById('leaveStatus').value;
+      const rejectionReason = document.getElementById('rejectionReason').value.trim();
+
+      if (editMode && leaveId) {
+        const leave = leaveRequests.find(r => r.leaveId === leaveId);
+        leave.employeeId = employeeId;
+        leave.leaveType = leaveTypeId;
+        leave.startDate = startDate;
+        leave.endDate = endDate;
+        leave.status = status;
+        leave.rejectionReason = rejectionReason;
+      } else {
+        const newLeaveId = `L${String(leaveRequests.length + 1).padStart(3, '0')}`;
+        leaveRequests.push({
+          employeeId, leaveId: newLeaveId, leaveType: leaveTypeId,
+          startDate, endDate, status, requestDate: new Date().toLocaleDateString(),
+          approvalDate: status === 'Approved' ? new Date().toLocaleDateString() : '',
+          totalDays: Math.floor((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1,
+          rejectionReason
+        });
+      }
+
+      closeModal();
+      displayLeaveRequests();
+    });
+
+    function viewLeave(id) {
+      const leave = leaveRequests.find(r => r.leaveId === id);
+      document.getElementById('modalTitle').innerText = `Leave Details: ${id}`;
+      document.getElementById('leaveForm').innerHTML = `
+        <p><strong>Employee ID:</strong> ${leave.employeeId}</p>
+        <p><strong>Leave ID:</strong> ${leave.leaveId}</p>
+        <p><strong>Leave Type:</strong> ${leave.leaveType}</p>
+        <p><strong>Start Date:</strong> ${leave.startDate}</p>
+        <p><strong>End Date:</strong> ${leave.endDate}</p>
+        <p><strong>Status:</strong> ${leave.status}</p>
+        <p><strong>Request Date:</strong> ${leave.requestDate}</p>
+        <p><strong>Approval Date:</strong> ${leave.approvalDate || ''}</p>
+        <p><strong>Total Days:</strong> ${leave.totalDays}</p>
+        <p><strong>Rejection Reason:</strong> ${leave.rejectionReason || ''}</p>
+      `;
+      document.getElementById('leaveModal').style.display = 'block';
+    }
+
+    function editLeave(id) {
+      const leave = leaveRequests.find(r => r.leaveId === id);
+      editMode = true;
+      document.getElementById('modalTitle').innerText = `Edit Leave: ${id}`;
+      document.getElementById('leaveId').value = leave.leaveId;
+      document.getElementById('empId').value = leave.employeeId;
+      document.getElementById('leaveTypeId').value = leave.leaveType;
+      document.getElementById('startDate').value = leave.startDate;
+      document.getElementById('endDate').value = leave.endDate;
+      document.getElementById('leaveStatus').value = leave.status;
+      document.getElementById('rejectionReason').value = leave.rejectionReason;
+      document.getElementById('leaveModal').style.display = 'block';
+    }
+
+    function deleteLeave(id) {
+      const index = leaveRequests.findIndex(r => r.leaveId === id);
+      if (index !== -1 && confirm("Are you sure you want to delete this leave request?")) {
+        leaveRequests.splice(index, 1);
+        displayLeaveRequests();
+      }
+    }
+
+    function searchLeave() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const filteredLeaveRequests = leaveRequests.filter(leave => 
+        leave.employeeId.toLowerCase().includes(searchTerm) ||
+        leave.leaveId.toLowerCase().includes(searchTerm) ||
+        leave.leaveType.toLowerCase().includes(searchTerm)
+      );
+      displayLeaveRequests(filteredLeaveRequests);
+    }
+
+    displayLeaveRequests();
+  </script>
+</body>
+</html>
