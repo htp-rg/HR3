@@ -291,7 +291,9 @@
         <div class="search-bar">
           <input type="text" id="searchInput" onkeyup="searchTimesheet()" placeholder="Search by Employee ID or Date..." />
         </div>
-
+<div class="add-timesheet-container">
+          <button class="add-timesheet-btn" onclick="openAddModal()">Add Timesheet</button>
+        </div>
        <div class="table-section">
           <h4>Timesheet Records</h4>
           <table>
@@ -311,7 +313,26 @@
       </section>
     </div>
   </div>
-
+  
+<div id="addModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeAddModal()">&times;</span>
+      <h3>Add Timesheet</h3>
+      <form id="addTimesheetForm">
+        <label for="addEmployeeId">Employee ID:</label>
+        <input type="text" id="addEmployeeId" name="employeeId" />
+        <label for="addDate">Date:</label>
+        <input type="date" id="addDate" name="date" />
+        <label for="addHours">Hours Worked:</label>
+        <input type="number" id="addHours" name="hours" />
+        <label for="addOvertime">Overtime Hours:</label>
+        <input type="number" id="addOvertime" name="overtime" />
+        <div class="button-container">
+          <button type="button" class="add-btn" onclick="addTimesheet()">Add Timesheet</button>
+        </div>
+      </form>
+    </div>
+  </div>
   
   <div id="editModal" class="modal">
     <div class="modal-content">
