@@ -391,46 +391,65 @@
     }
 
     function openModal() {
-      document.getElementById('myModal').style.display = 'block';
-      document.getElementById('setupId').value = 'New';
-      document.getElementById('empId').value = '';
-      document.getElementById('frequency').value = '';
-      document.getElementById('startDay').value = '';
-      document.getElementById('endDay').value = '';
-      editIndex = -1;
-    }
+  document.getElementById('myModal').style.display = 'block';
+  
+  if (editIndex === -1) {
+    document.getElementById('setupId').value = 'New';
+    document.getElementById('empId').value = '';
+    document.getElementById('frequency').value = '';
+    document.getElementById('startDay').value = '';
+    document.getElementById('endDay').value = '';
+  } else {
+   
+    const setup = setups[editIndex];
+    document.getElementById('setupId').value = setup.setupId;
+    document.getElementById('empId').value = setup.empId;
+    document.getElementById('frequency').value = setup.frequency;
+    document.getElementById('startDay').value = setup.startDay;
+    document.getElementById('endDay').value = setup.endDay;
+  }
+}
 
-    function closeModal() {
-      document.getElementById('myModal').style.display = 'none';
-    }
+function saveSetup() {
+  const setupId = document.getElementById('setupId').value;
+  const empId = document.getElementById('empId').value;
+  const frequency = document.getElementById('frequency').value;
+  const startDay = document.getElementById('startDay').value;
+  const endDay = document.getElementById('endDay').value;
 
-    function saveSetup() {
-      const setupId = document.getElementById('setupId').value;
-      const empId = document.getElementById('empId').value;
-      const frequency = document.getElementById('frequency').value;
-      const startDay = document.getElementById('startDay').value;
-      const endDay = document.getElementById('endDay').value;
+  
+  if (editIndex === -1) {
+    setups.push({
+      setupId: `S00${setups.length + 1}`,
+      empId,
+      frequency,
+      startDay,
+      endDay
+    });
+  } else {
+   
+    setups[editIndex] = {
+      setupId: setups[editIndex].setupId,
+      empId,
+      frequency,
+      startDay,
+      endDay
+    };
+  }
 
-      if (editIndex === -1) {
-        setups.push({ setupId: `S00${setups.length + 1}`, empId, frequency, startDay, endDay });
-      } else {
-        setups[editIndex] = { setupId: setups[editIndex].setupId, empId, frequency, startDay, endDay };
-      }
+  
+  displaySetups();
+  closeModal();
+}
 
-      displaySetups();
-      closeModal();
-    }
+function editSetup(index) {
+  editIndex = index;
+  openModal();
+}
 
-    function editSetup(index) {
-      editIndex = index;
-      const setup = setups[index];
-      document.getElementById('setupId').value = setup.setupId;
-      document.getElementById('empId').value = setup.empId;
-      document.getElementById('frequency').value = setup.frequency;
-      document.getElementById('startDay').value = setup.startDay;
-      document.getElementById('endDay').value = setup.endDay;
-      openModal();
-    }
+function closeModal() {
+  document.getElementById('myModal').style.display = 'none';
+}
 
     function deleteSetup(index) {
       if (confirm('Are you sure you want to delete this setup?')) {
