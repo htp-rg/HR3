@@ -1,1 +1,146 @@
 
+
+<section class="dashboard">
+        <div class="search-bar">
+          <input type="text" id="searchInput" onkeyup="searchConfigs()" placeholder="Search configurations..." />
+        </div>
+
+        <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Add Configuration
+        </button>
+
+        <div id="configModal" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form class="add-form" onsubmit="addConfig(event)">
+              <input type="text" id="configId" placeholder="Configuration ID" required />
+              <input type="text" id="paramName" placeholder="Parameter Name" required />
+              <input type="date" id="effDate" required />
+              <input type="date" id="expDate" required />
+              <button type="submit">Save Configuration</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="table-section">
+          <h4>Configuration Data</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Configuration ID</th>
+                <th>Parameter Name</th>
+                <th>Effective Date</th>
+                <th>Expiry Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="configTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const configs = [
+      { id: 'CFG001', name: 'Travel Allowance', effective: '2024-01-01', expiry: '2024-12-31' },
+      { id: 'CFG002', name: 'Meal Reimbursement', effective: '2024-03-01', expiry: '2024-09-30' },
+      { id: 'CFG003', name: 'Remote Work Setup', effective: '2024-02-15', expiry: '2024-08-15' }
+    ];
+
+    let editIndex = null;
+
+    function displayConfigs(list = configs) {
+      const tbody = document.getElementById('configTableBody');
+      tbody.innerHTML = '';
+      list.forEach((cfg, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${cfg.id}</td>
+          <td>${cfg.name}</td>
+          <td>${cfg.effective}</td>
+          <td>${cfg.expiry}</td>
+          <td class="actions">
+            <i class="fas fa-edit" onclick="editConfig(${index})"></i>
+            <i class="fas fa-trash-alt" onclick="deleteConfig(${index})"></i>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function searchConfigs() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = configs.filter(c =>
+        c.id.toLowerCase().includes(query) ||
+        c.name.toLowerCase().includes(query)
+      );
+      displayConfigs(filtered);
+    }
+
+    function openAddModal() {
+      document.getElementById('configModal').style.display = 'flex';
+      if (editIndex === null) {
+        document.querySelector('.add-form').reset();
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('configModal').style.display = 'none';
+      editIndex = null;
+    }
+
+    function addConfig(event) {
+      event.preventDefault();
+      const id = document.getElementById('configId').value.trim();
+      const name = document.getElementById('paramName').value.trim();
+      const effective = document.getElementById('effDate').value;
+      const expiry = document.getElementById('expDate').value;
+
+      if (!id || !name || !effective || !expiry) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const newConfig = { id, name, effective, expiry };
+
+      if (editIndex !== null) {
+        configs[editIndex] = newConfig;
+      } else {
+        configs.push(newConfig);
+      }
+
+      displayConfigs();
+      closeModal();
+    }
+
+    function editConfig(index) {
+      const cfg = configs[index];
+      document.getElementById('configId').value = cfg.id;
+      document.getElementById('paramName').value = cfg.name;
+      document.getElementById('effDate').value = cfg.effective;
+      document.getElementById('expDate').value = cfg.expiry;
+      editIndex = index;
+      openAddModal();
+    }
+
+    function deleteConfig(index) {
+      if (confirm("Are you sure you want to delete this configuration?")) {
+        configs.splice(index, 1);
+        displayConfigs();
+      }
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('configModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      displayConfigs();
+    });
+  </script>
+</body>
+</html>
