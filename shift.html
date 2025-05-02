@@ -341,19 +341,19 @@
     const tableBody = document.getElementById('shiftTableBody');
     tableBody.innerHTML = '';
     list.forEach(shift => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${shift.id}</td>
-        <td>${shift.shift}</td>
-        <td>${shift.start}</td>
-        <td>${shift.end}</td>
-        <td class="actions">
-          <i class="fas fa-eye" onclick="viewShift('${shift.id}')"></i>
-          <i class="fas fa-edit" onclick="editShift('${shift.id}')"></i>
-          <i class="fas fa-trash" onclick="deleteShift('${shift.id}')"></i>
-        </td>
+      tableBody.innerHTML += `
+        <tr>
+          <td>${shift.id}</td>
+          <td>${shift.shift}</td>
+          <td>${shift.start}</td>
+          <td>${shift.end}</td>
+          <td class="actions">
+            <i class="fas fa-eye" onclick="viewShift('${shift.id}')"></i>
+            <i class="fas fa-edit" onclick="editShift('${shift.id}')"></i>
+            <i class="fas fa-trash" onclick="deleteShift('${shift.id}')"></i>
+          </td>
+        </tr>
       `;
-      tableBody.appendChild(row);
     });
   }
 
@@ -378,51 +378,32 @@
     document.getElementById('shiftModal').style.display = 'block';
   }
 
-  function closeModal() {
-    document.getElementById('shiftModal').style.display = 'none';
+  function editShift(id) {
+    const shift = shifts.find(s => s.id === id);
+    document.getElementById('modalTitle').innerText = `Edit Shift: ${shift.shift}`;
+    document.getElementById('modalContent').innerHTML = `
+      <form id="editShiftForm">
+        <label>Shift Name:</label><br>
+        <input type="text" id="shiftName" value="${shift.shift}" required><br><br>
+        <label>Start Time:</label><br>
+        <input type="time" id="startTime" value="${convertTo24Hour(shift.start)}" required><br><br>
+        <label>End Time:</label><br>
+        <input type="time" id="endTime" value="${convertTo24Hour(shift.end)}" required><br><br>
+        <button type="submit">Save</button>
+      </form>
+    `;
+    document.getElementById('shiftModal').style.display = 'block';
+
+    document.getElementById('editShiftForm').onsubmit = function (e) {
+      e.preventDefault();
+      shift.shift = document.getElementById('shiftName').value;
+      shift.start = convertTo12Hour(document.getElementById('startTime').value);
+      shift.end = convertTo12Hour(document.getElementById('endTime').value);
+      closeModal();
+      displayShifts();
+    };
   }
 
- function editShift(id) {
-  const shift = shifts.find(s => s.id === id);
-  const modal = document.getElementById('shiftModal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalContent = document.getElementById('modalContent');
-
-  modalTitle.innerText = `Edit Shift: ${shift.shift}`;
-  modalContent.innerHTML = `
-    <form id="editShiftForm">
-      <label for="shiftName">Shift Time:</label><br>
-      <input type="text" id="shiftName" value="${shift.shift}" required><br><br>
-      <label for="startTime">Start Time:</label><br>
-      <input type="time" id="startTime" value="${convertTo24Hour(shift.start)}" required><br><br>
-      <label for="endTime">End Time:</label><br>
-      <input type="time" id="endTime" value="${convertTo24Hour(shift.end)}" required><br><br>
-      <button type="submit">Save Changes</button>
-    </form>
-  `;
-
-  modal.style.display = 'block';
-
-  
-  requestAnimationFrame(() => {
-    const form = document.getElementById('editShiftForm');
-    if (form) {
-      form.onsubmit = function (e) {
-        e.preventDefault();
-        const shiftName = document.getElementById('shiftName').value;
-        const startTime = document.getElementById('startTime').value;
-        const endTime = document.getElementById('endTime').value;
-
-        shift.shift = shiftName;
-        shift.start = convertTo12Hour(startTime);
-        shift.end = convertTo12Hour(endTime);
-
-        closeModal();
-        displayShifts();
-      };
-    }
-  });
-}
   function deleteShift(id) {
     const index = shifts.findIndex(s => s.id === id);
     if (index !== -1 && confirm("Are you sure you want to delete this shift?")) {
