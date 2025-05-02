@@ -188,6 +188,47 @@
     .dropdown:hover .dropdown-content {
       display: block;
     }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      position: relative;
+    }
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .add-form input, .add-form select, .add-form button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .add-form button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .add-form button:hover {
+      background-color: #2980b9;
+    }
   </style>
 </head>
 <body>
@@ -278,7 +319,6 @@
           Add Claims
         </button>
 
-        
         <div id="claimModal" class="modal">
           <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
@@ -292,7 +332,7 @@
                 <option value="Rejected">Rejected</option>
               </select>
               <input type="number" id="approvedAmount" placeholder="Approved Amount" required />
-              <button type="submit">Add Claim</button>
+              <button type="submit">Save Claim</button>
             </form>
           </div>
         </div>
@@ -307,6 +347,7 @@
                 <th>Claim Amount</th>
                 <th>Status</th>
                 <th>Approved Amount</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="claimTableBody"></tbody>
@@ -325,10 +366,12 @@
       { id: 'C005', date: '2024-04-25', amount: 150.00, status: 'Pending', approvedAmount: 0 }
     ];
 
+    let editIndex = null;
+
     function displayClaims(list = claims) {
       const tbody = document.getElementById('claimTableBody');
       tbody.innerHTML = '';
-      list.forEach(claim => {
+      list.forEach((claim, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${claim.id}</td>
@@ -336,6 +379,10 @@
           <td>$${claim.amount.toFixed(2)}</td>
           <td>${claim.status}</td>
           <td>$${claim.approvedAmount.toFixed(2)}</td>
+          <td class="actions">
+            <i class="fas fa-edit" onclick="editClaim(${index})"></i>
+            <i class="fas fa-trash-alt" onclick="deleteClaim(${index})"></i>
+          </td>
         `;
         tbody.appendChild(row);
       });
@@ -351,6 +398,16 @@
       displayClaims(filtered);
     }
 
+    function openAddModal() {
+      document.getElementById('claimModal').style.display = 'flex';
+      document.querySelector('.add-form').reset();
+      editIndex = null;
+    }
+
+    function closeModal() {
+      document.getElementById('claimModal').style.display = 'none';
+    }
+
     function addClaim(event) {
       event.preventDefault();
       const id = document.getElementById('claimId').value.trim();
@@ -364,18 +421,35 @@
         return;
       }
 
-      claims.push({ id, date, amount, status, approvedAmount });
+      const newClaim = { id, date, amount, status, approvedAmount };
+
+      if (editIndex !== null) {
+        claims[editIndex] = newClaim;
+      } else {
+        claims.push(newClaim);
+      }
+
       displayClaims();
-      event.target.reset();
       closeModal();
     }
 
-    function openModal() {
-      document.getElementById('claimModal').style.display = 'flex';
+    function editClaim(index) {
+      const claim = claims[index];
+      document.getElementById('claimId').value = claim.id;
+      document.getElementById('claimDate').value = claim.date;
+      document.getElementById('claimAmount').value = claim.amount;
+      document.getElementById('claimStatus').value = claim.status;
+      document.getElementById('approvedAmount').value = claim.approvedAmount;
+
+      editIndex = index;
+      openAddModal();
     }
 
-    function closeModal() {
-      document.getElementById('claimModal').style.display = 'none';
+    function deleteClaim(index) {
+      if (confirm("Are you sure you want to delete this claim?")) {
+        claims.splice(index, 1);
+        displayClaims();
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
