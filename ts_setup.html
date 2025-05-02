@@ -159,6 +159,46 @@
     .dropdown:hover .dropdown-content {
       display: block;
     }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+    .modal-header, .modal-body {
+      margin-bottom: 15px;
+    }
+    .modal-close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .modal-close:hover,
+    .modal-close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
   </style>
 </head>
 <body>
@@ -247,6 +287,9 @@
 
         <div class="table-section">
           <h4>Employee Setup</h4>
+          <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Add Time Set Up
+        </button>
           <table>
             <thead>
               <tr>
@@ -255,12 +298,42 @@
                 <th>Frequency</th>
                 <th>Start Day</th>
                 <th>End Day</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="setupTableBody"></tbody>
           </table>
         </div>
       </section>
+    </div>
+  </div>
+
+  
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <h2>Time Setup Form</h2>
+      </div>
+      <div class="modal-body">
+        <label for="setupId">Set Up ID:</label>
+        <input type="text" id="setupId" disabled />
+        <br />
+        <label for="empId">Employee ID:</label>
+        <input type="text" id="empId" />
+        <br />
+        <label for="frequency">Frequency:</label>
+        <input type="text" id="frequency" />
+        <br />
+        <label for="startDay">Start Day:</label>
+        <input type="text" id="startDay" />
+        <br />
+        <label for="endDay">End Day:</label>
+        <input type="text" id="endDay" />
+      </div>
+      <div class="modal-footer">
+        <button onclick="saveSetup()">Save</button>
+      </div>
     </div>
   </div>
 
@@ -277,10 +350,12 @@
       { setupId: 'S005', empId: '0011', frequency: 'Monthly', startDay: '1st', endDay: '15th' }
     ];
 
+    let editIndex = -1;
+
     function displaySetups(list = setups) {
       const tableBody = document.getElementById('setupTableBody');
       tableBody.innerHTML = '';
-      list.forEach(item => {
+      list.forEach((item, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${item.setupId}</td>
@@ -288,6 +363,10 @@
           <td>${item.frequency}</td>
           <td>${item.startDay}</td>
           <td>${item.endDay}</td>
+          <td>
+            <button onclick="editSetup(${index})">Edit</button>
+            <button onclick="deleteSetup(${index})">Delete</button>
+          </td>
         `;
         tableBody.appendChild(row);
       });
@@ -301,14 +380,65 @@
       );
       displaySetups(filtered);
     }
-function toggleSubMenu(id) {
-            const submenu = document.getElementById(id);
-            if (submenu.style.display === 'none') {
-                submenu.style.display = 'block';
-            } else {
-                submenu.style.display = 'none';
-            }
-        }
+
+    function toggleSubMenu(id) {
+      const submenu = document.getElementById(id);
+      if (submenu.style.display === 'none') {
+        submenu.style.display = 'block';
+      } else {
+        submenu.style.display = 'none';
+      }
+    }
+
+    function openModal() {
+      document.getElementById('myModal').style.display = 'block';
+      document.getElementById('setupId').value = 'New';
+      document.getElementById('empId').value = '';
+      document.getElementById('frequency').value = '';
+      document.getElementById('startDay').value = '';
+      document.getElementById('endDay').value = '';
+      editIndex = -1;
+    }
+
+    function closeModal() {
+      document.getElementById('myModal').style.display = 'none';
+    }
+
+    function saveSetup() {
+      const setupId = document.getElementById('setupId').value;
+      const empId = document.getElementById('empId').value;
+      const frequency = document.getElementById('frequency').value;
+      const startDay = document.getElementById('startDay').value;
+      const endDay = document.getElementById('endDay').value;
+
+      if (editIndex === -1) {
+        setups.push({ setupId: `S00${setups.length + 1}`, empId, frequency, startDay, endDay });
+      } else {
+        setups[editIndex] = { setupId: setups[editIndex].setupId, empId, frequency, startDay, endDay };
+      }
+
+      displaySetups();
+      closeModal();
+    }
+
+    function editSetup(index) {
+      editIndex = index;
+      const setup = setups[index];
+      document.getElementById('setupId').value = setup.setupId;
+      document.getElementById('empId').value = setup.empId;
+      document.getElementById('frequency').value = setup.frequency;
+      document.getElementById('startDay').value = setup.startDay;
+      document.getElementById('endDay').value = setup.endDay;
+      openModal();
+    }
+
+    function deleteSetup(index) {
+      if (confirm('Are you sure you want to delete this setup?')) {
+        setups.splice(index, 1);
+        displaySetups();
+      }
+    }
+
     displaySetups();
   </script>
 </body>
