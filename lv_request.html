@@ -365,7 +365,7 @@
     const leaveRequests = [
       { employeeId: 'E001', leaveId: 'L001', leaveType: 'Sick Leave', startDate: '2025-05-01', endDate: '2025-05-03', status: 'Approved', requestDate: '2025-04-28', approvalDate: '2025-04-29', totalDays: 3, rejectionReason: '' },
       { employeeId: 'E002', leaveId: 'L002', leaveType: 'Vacation', startDate: '2025-06-01', endDate: '2025-06-05', status: 'Pending', requestDate: '2025-05-10', approvalDate: '', totalDays: 5, rejectionReason: '' },
-      // Add more leave requests as needed
+      
     ];
 
     function displayLeaveRequests(list = leaveRequests) {
@@ -385,7 +385,6 @@
           <td>${leave.totalDays}</td>
           <td>${leave.rejectionReason || ''}</td>
           <td class="actions">
-            <i class="fas fa-eye" onclick="viewLeave('${leave.leaveId}')"></i>
             <i class="fas fa-edit" onclick="editLeave('${leave.leaveId}')"></i>
             <i class="fas fa-trash" onclick="deleteLeave('${leave.leaveId}')"></i>
           </td>
@@ -443,25 +442,7 @@
       closeModal();
       displayLeaveRequests();
     });
-
-    function viewLeave(id) {
-      const leave = leaveRequests.find(r => r.leaveId === id);
-      document.getElementById('modalTitle').innerText = `Leave Details: ${id}`;
-      document.getElementById('leaveForm').innerHTML = `
-        <p><strong>Employee ID:</strong> ${leave.employeeId}</p>
-        <p><strong>Leave ID:</strong> ${leave.leaveId}</p>
-        <p><strong>Leave Type:</strong> ${leave.leaveType}</p>
-        <p><strong>Start Date:</strong> ${leave.startDate}</p>
-        <p><strong>End Date:</strong> ${leave.endDate}</p>
-        <p><strong>Status:</strong> ${leave.status}</p>
-        <p><strong>Request Date:</strong> ${leave.requestDate}</p>
-        <p><strong>Approval Date:</strong> ${leave.approvalDate || ''}</p>
-        <p><strong>Total Days:</strong> ${leave.totalDays}</p>
-        <p><strong>Rejection Reason:</strong> ${leave.rejectionReason || ''}</p>
-      `;
-      document.getElementById('leaveModal').style.display = 'block';
-    }
-
+}
     function editLeave(id) {
       const leave = leaveRequests.find(r => r.leaveId === id);
       editMode = true;
@@ -475,6 +456,14 @@
       document.getElementById('rejectionReason').value = leave.rejectionReason;
       document.getElementById('leaveModal').style.display = 'block';
     }
+    function toggleSubMenu(id) {
+  const submenu = document.getElementById(id);
+  if (submenu.style.display === 'none') {
+    submenu.style.display = 'block';
+  } else {
+    submenu.style.display = 'none';
+  }
+}
 
     function deleteLeave(id) {
       const index = leaveRequests.findIndex(r => r.leaveId === id);
