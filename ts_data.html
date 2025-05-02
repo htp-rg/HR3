@@ -419,6 +419,25 @@
       document.getElementById('overtime').value = timesheet.overtime;
       document.getElementById('editModal').style.display = 'block';
     }
+    <div id="addModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeAddModal()">&times;</span>
+    <h3>Add Timesheet</h3>
+    <form id="addTimesheetForm">
+      <label for="addEmployeeId">Employee ID:</label>
+      <input type="text" id="addEmployeeId" name="employeeId" />
+      <label for="addDate">Date:</label>
+      <input type="date" id="addDate" name="date" />
+      <label for="addHours">Hours Worked:</label>
+      <input type="number" id="addHours" name="hours" />
+      <label for="addOvertime">Overtime Hours:</label>
+      <input type="number" id="addOvertime" name="overtime" />
+      <div class="button-container">
+        <button type="button" onclick="addTimesheet()">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
 
     function closeModal() {
       document.getElementById('editModal').style.display = 'none';
