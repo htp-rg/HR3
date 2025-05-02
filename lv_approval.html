@@ -257,8 +257,8 @@
                     <ul id="claimReimbursement" style="display:none;">
                         <li><a href="policy.html">Policy</a></li>
                         <li><a href="claimdata.html">Claim Data</a></li>
+                       <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
                         <li><a href="configuration.html">Configuration</a></li>
-                        <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
                     </ul>
                     <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a></li>
                     <ul id="leaveManagement" style="display:none;">
@@ -410,6 +410,11 @@
       document.getElementById('modalTitle').innerText = 'Add Approval Request';
       document.getElementById('approvalRequestModal').style.display = 'block';
     }
+    function toggleSubMenu(menuId) {
+      const subMenu = document.getElementById(menuId);
+      subMenu.style.display = subMenu.style.display === 'none' ? 'block' : 'none';
+    }
+
 
     renderApprovalRequestTable();
   </script>
