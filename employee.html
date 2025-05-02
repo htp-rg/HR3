@@ -399,17 +399,17 @@
     }
 
     function viewEmployee(id) {
-      const emp = employees.find(e => e.id === id);
-      document.getElementById('modalTitle').innerText = `Employee Details: ${emp.name}`;
-      document.getElementById('modalContent').innerHTML = `
-        <p><strong>ID:</strong> ${emp.id}</p>
-        <p><strong>Company:</strong> ${emp.company}</p>
-        <p><strong>Department:</strong> ${emp.department}</p>
-        <p><strong>Position:</strong> ${emp.position}</p>
-        <p><strong>Status:</strong> ${emp.status}</p>
-      `;
-      document.getElementById('employeeModal').style.display = 'block';
-    }
+  const emp = employees.find(e => e.id === id);
+  document.getElementById('modalTitle').innerText = `Employee Details: ${emp.name}`;
+  document.getElementById('employeeForm').innerHTML = `
+    <p><strong>ID:</strong> ${emp.id}</p>
+    <p><strong>Company:</strong> ${emp.company}</p>
+    <p><strong>Department:</strong> ${emp.department}</p>
+    <p><strong>Position:</strong> ${emp.position}</p>
+    <p><strong>Status:</strong> ${emp.status}</p>
+  `;
+  document.getElementById('employeeModal').style.display = 'block';
+}
 
     function closeModal() {
       document.getElementById('employeeModal').style.display = 'none';
