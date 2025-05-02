@@ -292,7 +292,7 @@
           <input type="text" id="searchInput" onkeyup="searchTimesheet()" placeholder="Search by Employee ID or Date..." />
         </div>
 
-        <div class="table-section">
+       <div class="table-section">
           <h4>Timesheet Records</h4>
           <table>
             <thead>
@@ -302,12 +302,37 @@
                 <th>Date</th>
                 <th>Hours Worked</th>
                 <th>Overtime Hours</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="timesheetTableBody"></tbody>
           </table>
         </div>
       </section>
+    </div>
+  </div>
+
+  
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>Edit Timesheet</h3>
+      <form id="editTimesheetForm">
+        <label for="timesheetId">Timesheet ID:</label>
+        <input type="text" id="timesheetId" name="timesheetId" disabled />
+        <label for="employeeId">Employee ID:</label>
+        <input type="text" id="employeeId" name="employeeId" />
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" />
+        <label for="hours">Hours Worked:</label>
+        <input type="number" id="hours" name="hours" />
+        <label for="overtime">Overtime Hours:</label>
+        <input type="number" id="overtime" name="overtime" />
+        <div class="button-container">
+          <button type="button" class="edit-btn" onclick="editTimesheet()">Save Changes</button>
+          <button type="button" class="delete-btn" onclick="deleteTimesheet()">Delete</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -324,10 +349,12 @@
       { id: 'TS1005', employeeId: '0011', date: '2025-04-01', hours: 10, overtime: 2 }
     ];
 
+    let currentEditingIndex = null;
+
     function displayTimesheets(list = timesheets) {
       const tbody = document.getElementById('timesheetTableBody');
       tbody.innerHTML = '';
-      list.forEach(entry => {
+      list.forEach((entry, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${entry.id}</td>
@@ -335,6 +362,10 @@
           <td>${entry.date}</td>
           <td>${entry.hours}</td>
           <td>${entry.overtime}</td>
+          <td>
+            <button onclick="openEditModal(${index})">Edit</button>
+            <button onclick="openEditModal(${index})">Delete</button>
+          </td>
         `;
         tbody.appendChild(row);
       });
@@ -347,15 +378,50 @@
         t.date.toLowerCase().includes(query)
       );
       displayTimesheets(filtered);
-   }
+    }
 
+    function openEditModal(index) {
+      currentEditingIndex = index;
+      const timesheet = timesheets[index];
+      document.getElementById('timesheetId').value = timesheet.id;
+      document.getElementById('employeeId').value = timesheet.employeeId;
+      document.getElementById('date').value = timesheet.date;
+      document.getElementById('hours').value = timesheet.hours;
+      document.getElementById('overtime').value = timesheet.overtime;
+      document.getElementById('editModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    function editTimesheet() {
+      const updatedTimesheet = {
+        id: document.getElementById('timesheetId').value,
+        employeeId: document.getElementById('employeeId').value,
+        date: document.getElementById('date').value,
+        hours: document.getElementById('hours').value,
+        overtime: document.getElementById('overtime').value
+      };
+      timesheets[currentEditingIndex] = updatedTimesheet;
+      displayTimesheets();
+      closeModal();
+    }
+
+    function deleteTimesheet() {
+      if (confirm("Are you sure you want to delete this timesheet?")) {
+        timesheets.splice(currentEditingIndex, 1);
+        displayTimesheets();
+        closeModal();
+      }
+    }
     function toggleSubMenu(id) {
       const submenu = document.getElementById(id);
       submenu.style.display = (submenu.style.display === 'none') ? 'block' : 'none';
     }
 
-    
     displayTimesheets();
   </script>
 </body>
 </html>
+    
