@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Policy Management</title>
+  <title>Claims</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
@@ -274,7 +274,9 @@
           <input type="text" id="searchInput" onkeyup="searchClaims()" placeholder="Search claims..." />
         </div>
 
-        <button onclick="openModal()">+ Add Claim</button>
+        <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Add Claims
+        </button>
 
         
         <div id="claimModal" class="modal">
