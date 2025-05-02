@@ -345,7 +345,7 @@
   <button type="submit" style="padding: 10px 20px; background-color: #2ecc71; color: white; border: none; border-radius: 5px;">Save</button>
 </form>
 
-  <script>
+    <script>
     function confirmLogout() {
       return confirm("Are you sure you want to log out?");
     }
@@ -408,7 +408,16 @@
     }
 
     function editEmployee(id) {
-      window.location.href = `editemployee.html?id=${id}`;
+      const emp = employees.find(e => e.id === id);
+      editMode = true;
+      document.getElementById('modalTitle').innerText = `Edit Employee: ${emp.name}`;
+      document.getElementById('empId').value = emp.id;
+      document.getElementById('empName').value = emp.name;
+      document.getElementById('empCompany').value = emp.company;
+      document.getElementById('empDepartment').value = emp.department;
+      document.getElementById('empPosition').value = emp.position;
+      document.getElementById('empStatus').value = emp.status;
+      document.getElementById('employeeModal').style.display = 'block';
     }
 
     function deleteEmployee(id) {
@@ -418,69 +427,51 @@
         displayEmployees();
       }
     }
-        function toggleSubMenu(id) {
-            const submenu = document.getElementById(id);
-            if (submenu.style.display === 'none') {
-                submenu.style.display = 'block';
-            } else {
-                submenu.style.display = 'none';
-            }
-        }
-   let editMode = false;
 
-  function openAddModal() {
-    editMode = false;
-    document.getElementById('modalTitle').innerText = 'Add New Employee';
-    document.getElementById('empId').value = '';
-    document.getElementById('empName').value = '';
-    document.getElementById('empCompany').value = '';
-    document.getElementById('empDepartment').value = '';
-    document.getElementById('empPosition').value = '';
-    document.getElementById('empStatus').value = 'Active';
-    document.getElementById('employeeModal').style.display = 'block';
-  }
-
-  function editEmployee(id) {
-    const emp = employees.find(e => e.id === id);
-    editMode = true;
-    document.getElementById('modalTitle').innerText = `Edit Employee: ${emp.name}`;
-    document.getElementById('empId').value = emp.id;
-    document.getElementById('empName').value = emp.name;
-    document.getElementById('empCompany').value = emp.company;
-    document.getElementById('empDepartment').value = emp.department;
-    document.getElementById('empPosition').value = emp.position;
-    document.getElementById('empStatus').value = emp.status;
-    document.getElementById('employeeModal').style.display = 'block';
-  }
-
-  document.getElementById('employeeForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const id = document.getElementById('empId').value.trim();
-    const name = document.getElementById('empName').value.trim();
-    const company = document.getElementById('empCompany').value.trim();
-    const department = document.getElementById('empDepartment').value.trim();
-    const position = document.getElementById('empPosition').value.trim();
-    const status = document.getElementById('empStatus').value;
-
-    if (editMode && id) {
-      const emp = employees.find(e => e.id === id);
-      emp.name = name;
-      emp.company = company;
-      emp.department = department;
-      emp.position = position;
-      emp.status = status;
-    } else {
-      const newId = String(Math.max(...employees.map(e => parseInt(e.id))) + 1).padStart(4, '0');
-      employees.push({ id: newId, name, company, department, position, status });
+    function toggleSubMenu(id) {
+        const submenu = document.getElementById(id);
+        submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
     }
 
-    closeModal();
-    displayEmployees();
-  });
+    let editMode = false;
 
-  function closeModal() {
-    document.getElementById('employeeModal').style.display = 'none';
-  }
+    function openAddModal() {
+      editMode = false;
+      document.getElementById('modalTitle').innerText = 'Add New Employee';
+      document.getElementById('empId').value = '';
+      document.getElementById('empName').value = '';
+      document.getElementById('empCompany').value = '';
+      document.getElementById('empDepartment').value = '';
+      document.getElementById('empPosition').value = '';
+      document.getElementById('empStatus').value = 'Active';
+      document.getElementById('employeeModal').style.display = 'block';
+    }
+
+    document.getElementById('employeeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = document.getElementById('empId').value.trim();
+      const name = document.getElementById('empName').value.trim();
+      const company = document.getElementById('empCompany').value.trim();
+      const department = document.getElementById('empDepartment').value.trim();
+      const position = document.getElementById('empPosition').value.trim();
+      const status = document.getElementById('empStatus').value;
+
+      if (editMode && id) {
+        const emp = employees.find(e => e.id === id);
+        emp.name = name;
+        emp.company = company;
+        emp.department = department;
+        emp.position = position;
+        emp.status = status;
+      } else {
+        const newId = String(Math.max(...employees.map(e => parseInt(e.id))) + 1).padStart(4, '0');
+        employees.push({ id: newId, name, company, department, position, status });
+      }
+
+      closeModal();
+      displayEmployees();
+    });
+
     displayEmployees();
   </script>
 </body>
