@@ -11,7 +11,7 @@
       margin: 0;
       padding: 0;
       background: #ecf0f1;
-      color: black;
+      color: white;
       height: 100vh;
       overflow: hidden;
     }
@@ -22,7 +22,7 @@
     }
     .sidebar {
       width: 280px;
-      background: rgba(44, 62, 80, 0.9);
+      background: navy;
       backdrop-filter: blur(10px);
       color: white;
       display: flex;
@@ -113,7 +113,7 @@
       flex: 1;
     }
     .table-section {
-      background: white;
+      background: navy;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
@@ -133,18 +133,25 @@
       border-collapse: collapse;
       margin-top: 10px;
     }
-    th, td {
+    th {
       text-align: left;
       padding: 10px;
+      color:navy;
       border-bottom: 1px solid #ddd;
     }
     th {
       background: #f4f4f4;
     }
+    td {
+      text-align: left;
+      padding: 10px;
+      color:white;
+      border-bottom: 1px solid #ddd;
+    }
     .actions i {
       margin-right: 10px;
       cursor: pointer;
-      color: #2c3e50;
+      color: white;
     }
     .modal {
       display: none;
@@ -158,7 +165,7 @@
       background-color: rgba(0,0,0,0.5);
     }
     .modal-content {
-      background-color: #fff;
+      background-color: navy;
       margin: 10% auto;
       padding: 20px;
       border: 1px solid #888;
@@ -247,12 +254,12 @@
                         <li><a href="ts_reporting.html">Timesheet Reporting</a></li>
                     </ul>
                     <li><a href="#" onclick="toggleSubMenu('claimReimbursement')">Claim and Reimbursement</a></li>
-                    <ul id="claimReimbursement" style="display:none;">
-                        <li><a href="policy.html">Policy</a></li>
-                        <li><a href="claimdata.html">Claim Data</a></li>
-                        <li><a href="configuration.html">Configuration</a></li>
-                        <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
-                    </ul>
+        <ul id="claimReimbursement" style="display:none;">
+          <li><a href="policy.html">Policy</a></li>
+          <li><a href="claimdata.html">Claim Data</a></li>
+          <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
+          <li><a href="configuration.html">Configuration</a></li>
+        </ul>
                     <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a></li>
                     <ul id="leaveManagement" style="display:none;">
                         <li><a href="lv_employee.html">Employee</a></li>
@@ -303,7 +310,7 @@
 
       <section class="dashboard">
         <div class="search-bar">
-          <input type="text" id="searchInput" onkeyup="searchEmployee()" placeholder="Search for employees.." />
+          <input type="text" id="searchInput" onkeyup="searchEmployee()" placeholder="Search for employees..." />
         </div>
         <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
           Add Employee
@@ -315,7 +322,7 @@
               <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Company</th>
+                <th>Age</th>
                 <th>Department</th>
                 <th>Position</th>
                 <th>Status</th>
@@ -329,15 +336,15 @@
     </div>
   </div>
 
-  
   <div id="employeeModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <h4 id="modalTitle"></h4>
       <form id="employeeForm">
         <input type="hidden" id="empId" />
-        <p><label>Name:<br><input type="text" id="empName" required></label></p>
-        <p><label>Company:<br><input type="text" id="empCompany" required></label></p>
+        <p><label>First Name:<br><input type="text" id="empName" required></label></p>
+        <p><label>Last Name:<br><input type="text" id="empLastname" required></label></p>
+        <p><label>Age:<br><input type="number" id="empAge" required></label></p>
         <p><label>Department:<br><input type="text" id="empDepartment" required></label></p>
         <p><label>Position:<br><input type="text" id="empPosition" required></label></p>
         <p><label>Status:<br>
@@ -352,35 +359,32 @@
   </div>
 
   <script>
-    let editMode = false;  
-
-    function confirmLogout() {
-      return confirm("Are you sure you want to log out?");
-    }
-
     const employees = [
-      { id: '0015', name: 'Feniza, Rogen Mark', company: 'APPLE CORPORATION', department: 'ACCOUNTING', position: 'ACCOUNTING SPECIALIST', status: 'Active' },
-      { id: '0014', name: 'Bermoy, Abegail', company: 'FACEBOOK CORPORATION', department: 'ACCOUNTING', position: 'ACCOUNTING SPECIALIST', status: 'Active' },
-      { id: '0013', name: 'Sabulao, Joana Joy', company: 'MICROSOFT CORPORATION', department: 'OPERATIONS', position: 'OPERATIONS MANAGER', status: 'Active' },
-      { id: '0012', name: 'Tabianan, Jenilyn', company: 'GOOGLE CORPORATION', department: 'MARKETING', position: 'MARKETING MANAGER', status: 'Active' },
-      { id: '0011', name: 'Tribiana, Pablo', company: 'APPLE CORPORATION', department: 'EXECUTIVE', position: 'CHIEF EXECUTIVE OFFICER', status: 'Active' }
+      { id: '0015', firstName: 'Jenilyn', lastName: 'Tabianan', age: 21, department: 'TIMEKEEPING', position: 'Timekeeping Specialist', status: 'Active' },
+      { id: '0014', firstName: 'Pablo', lastName: 'Tribiana', age: 22, department: 'PROJECT MANAGEMENT', position: 'Project Timesheet Handler', status: 'Active' },
+      { id: '0013', firstName: 'Joana', lastName: 'Sabulao', age: 21, department: 'FINANCE', position: 'Expense Tracking', status: 'Active' },
+      { id: '0012', firstName: 'Abigail', lastName: 'Bermoy', age: 21, department: 'HR', position: 'Leave & Absence Tracker', status: 'Active' },
+      { id: '0011', firstName: 'Rogen Mark', lastName: 'Feniza', age: 21, department: 'OPERATION', position: 'Operation Assistant', status: 'Active' },
+      { id: '0010', firstName: 'Angelou', lastName: 'Cagampang', age: 21, department: 'TIMEKEEPING', position: 'Timekeeper', status: 'Inactive' },
+      { id: '0009', firstName: 'Carmen', lastName: 'Jocson', age: 22, department: 'ADMINISTRATIVE', position: 'Admin Support', status: 'Active' },
+      { id: '0008', firstName: 'Isabelo', lastName: 'Perales', age: 23, department: 'ADMINISTRATIVE', position: 'Admin Assistant', status: 'Inactive' },
     ];
 
-    function displayEmployees(list = employees) {
+    function renderEmployeeTable() {
       const tableBody = document.getElementById('employeeTableBody');
       tableBody.innerHTML = '';
-      list.forEach(employee => {
+
+      employees.forEach(employee => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${employee.id}</td>
-          <td>${employee.name}</td>
-          <td>${employee.company}</td>
+          <td>${employee.firstName} ${employee.lastName}</td>
+          <td>${employee.age}</td>
           <td>${employee.department}</td>
           <td>${employee.position}</td>
           <td>${employee.status}</td>
           <td class="actions">
-            <i class="fas fa-eye" onclick="viewEmployee('${employee.id}')"></i>
-            <i class="fas fa-edit" onclick="editEmployee('${employee.id}')"></i>
+            <i class="fas fa-pencil-alt" onclick="editEmployee('${employee.id}')"></i>
             <i class="fas fa-trash" onclick="deleteEmployee('${employee.id}')"></i>
           </td>
         `;
@@ -388,102 +392,53 @@
       });
     }
 
-    function searchEmployee() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = employees.filter(e =>
-        e.name.toLowerCase().includes(query) ||
-        e.department.toLowerCase().includes(query) ||
-        e.position.toLowerCase().includes(query)
-      );
-      displayEmployees(filtered);
+    function editEmployee(empId) {
+      const employee = employees.find(emp => emp.id === empId);
+      if (employee) {
+        document.getElementById('empId').value = employee.id;
+        document.getElementById('empName').value = employee.firstName;
+        document.getElementById('empLastname').value = employee.lastName;
+        document.getElementById('empAge').value = employee.age;
+        document.getElementById('empDepartment').value = employee.department;
+        document.getElementById('empPosition').value = employee.position;
+        document.getElementById('empStatus').value = employee.status;
+        document.getElementById('modalTitle').innerText = 'Edit Employee';
+        document.getElementById('employeeModal').style.display = 'block';
+      }
     }
 
-    function viewEmployee(id) {
-  const emp = employees.find(e => e.id === id);
-  document.getElementById('modalTitle').innerText = `Employee Details: ${emp.name}`;
-  document.getElementById('employeeForm').innerHTML = `
-    <p><strong>ID:</strong> ${emp.id}</p>
-    <p><strong>Company:</strong> ${emp.company}</p>
-    <p><strong>Department:</strong> ${emp.department}</p>
-    <p><strong>Position:</strong> ${emp.position}</p>
-    <p><strong>Status:</strong> ${emp.status}</p>
-  `;
-  document.getElementById('employeeModal').style.display = 'block';
-}
+    function deleteEmployee(empId) {
+      if (confirm('Are you sure you want to delete this employee?')) {
+        const index = employees.findIndex(emp => emp.id === empId);
+        if (index !== -1) {
+          employees.splice(index, 1);
+          renderEmployeeTable();
+        }
+      }
+    }
 
     function closeModal() {
       document.getElementById('employeeModal').style.display = 'none';
     }
 
-    function editEmployee(id) {
-      const emp = employees.find(e => e.id === id);
-      editMode = true;
-      document.getElementById('modalTitle').innerText = `Edit Employee: ${emp.name}`;
-      document.getElementById('empId').value = emp.id;
-      document.getElementById('empName').value = emp.name;
-      document.getElementById('empCompany').value = emp.company;
-      document.getElementById('empDepartment').value = emp.department;
-      document.getElementById('empPosition').value = emp.position;
-      document.getElementById('empStatus').value = emp.status;
-      document.getElementById('employeeModal').style.display = 'block';
-    }
-     function toggleSubMenu(id) {
-      const submenu = document.getElementById(id);
-      submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function deleteEmployee(id) {
-      const index = employees.findIndex(e => e.id === id);
-      if (index !== -1 && confirm("Are you sure you want to delete this employee?")) {
-        employees.splice(index, 1);
-        displayEmployees();
-      }
-    }
-
     function openAddModal() {
-      editMode = false;
-      document.getElementById('modalTitle').innerText = 'Add New Employee';
       document.getElementById('empId').value = '';
       document.getElementById('empName').value = '';
-      document.getElementById('empCompany').value = '';
+      document.getElementById('empLastname').value = '';
+      document.getElementById('empAge').value = '';
       document.getElementById('empDepartment').value = '';
       document.getElementById('empPosition').value = '';
       document.getElementById('empStatus').value = 'Active';
+      document.getElementById('modalTitle').innerText = 'Add Employee';
       document.getElementById('employeeModal').style.display = 'block';
     }
 
-    document.getElementById('employeeForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const id = document.getElementById('empId').value.trim();
-      const name = document.getElementById('empName').value.trim();
-      const company = document.getElementById('empCompany').value.trim();
-      const department = document.getElementById('empDepartment').value.trim();
-      const position = document.getElementById('empPosition').value.trim();
-      const status = document.getElementById('empStatus').value;
+    function toggleSubMenu(menuId) {
+      const subMenu = document.getElementById(menuId);
+      subMenu.style.display = subMenu.style.display === 'none' ? 'block' : 'none';
+    }
 
-      if (editMode && id) {
-        const emp = employees.find(e => e.id === id);
-        emp.name = name;
-        emp.company = company;
-        emp.department = department;
-        emp.position = position;
-        emp.status = status;
-      } else {
-        const newId = String(Math.max(...employees.map(e => parseInt(e.id))) + 1).padStart(4, '0');
-        employees.push({ id: newId, name, company, department, position, status });
-      }
-
-      closeModal();
-      displayEmployees();
-    });
-
-    displayEmployees();
-
-    window.onclick = function(event) {
-      if (event.target === document.getElementById('employeeModal')) {
-        closeModal();
-      }
-    };
+    renderEmployeeTable();
   </script>
 </body>
 </html>
