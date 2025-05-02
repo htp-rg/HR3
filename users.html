@@ -309,32 +309,63 @@
             </header>
 
 <section class="dashboard">
-  <div class="search-bar">
-    <input type="text" id="searchInput" onkeyup="searchEmployee()" placeholder="Search for employees..." />
+      <div class="search-bar">
+        <input type="text" id="searchInput" onkeyup="searchEmployee()" placeholder="Search for employees..." />
+      </div>
+      <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Add Employee
+      </button>
+      <div class="table-section">
+        <h4>User</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>USER ID</th>
+              <th>FIRST NAME</th>
+              <th>LAST NAME</th>
+              <th>CONTACT</th>
+              <th>EMAIL</th>
+              <th>ROLE</th>
+              <th>ACCESS</th>
+              <th>STATUS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="employeeTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="employeeModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle">Add Employee</h2>
+        <form id="employeeForm" onsubmit="saveEmployee(event)">
+          <input type="hidden" id="empId" />
+          <label>First Name:</label>
+          <input type="text" id="firstName" required />
+          <label>Last Name:</label>
+          <input type="text" id="lastName" required />
+          <label>Contact:</label>
+          <input type="text" id="contact" />
+          <label>Email:</label>
+          <input type="email" id="email" />
+          <label>Role:</label>
+          <input type="text" id="role" required />
+          <label>Access:</label>
+          <input type="text" id="access" />
+          <label>Status:</label>
+          <select id="status" required>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+          <button type="submit" style="padding: 10px; background: #3498db; color: white; border: none; border-radius: 5px;">Save</button>
+        </form>
+      </div>
+    </div>
   </div>
-  <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
-    Add Employee
-  </button>
-  <div class="table-section">
-    <h4>User</h4>
-    <table>
-      <thead>
-        <tr>
-          <th>USER ID</th>
-          <th>FIRST NAME</th>
-          <th>LAST NAME</th>
-          <th>CONTACT</th>
-          <th>EMAIL</th>
-          <th>ROLE</th>
-          <th>ACCESS</th>
-          <th>STATUS</th>
-          <th>ACTIONS</th>
-        </tr>
-      </thead>
-      <tbody id="employeeTableBody"></tbody>
-    </table>
-  </div>
-</section>
+</div>
 
 <script>
   const employees = [
@@ -344,6 +375,8 @@
     { id: '04', firstName: 'Bermoy', lastName: 'Abigail', contact: '09560667637', email: 'abbybermoy345@gmail.com', role: 'Employee/Manager', access: 'Request, Approve', status: 'Active' },
     { id: '05', firstName: 'Rogen Mark', lastName: 'Feniza', contact: '', email: '', role: 'Manager', access: 'View, Edit', status: 'Active' }
   ];
+
+  let editingEmployeeId = null;
 
   function renderEmployeeTable() {
     const tableBody = document.getElementById('employeeTableBody');
@@ -367,10 +400,81 @@
       tableBody.appendChild(row);
     });
   }
-function toggleSubMenu(menuId) {
-      const subMenu = document.getElementById(menuId);
-      subMenu.style.display = subMenu.style.display === 'none' ? 'block' : 'none';
+
+  function toggleSubMenu(menuId) {
+    const subMenu = document.getElementById(menuId);
+    subMenu.style.display = subMenu.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function openAddModal() {
+    editingEmployeeId = null;
+    document.getElementById('employeeForm').reset();
+    document.getElementById('modalTitle').textContent = 'Add Employee';
+    document.getElementById('employeeModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('employeeModal').style.display = 'none';
+  }
+
+  function editEmployee(id) {
+    const emp = employees.find(e => e.id === id);
+    if (!emp) return;
+    editingEmployeeId = id;
+    document.getElementById('modalTitle').textContent = 'Edit Employee';
+    document.getElementById('empId').value = emp.id;
+    document.getElementById('firstName').value = emp.firstName;
+    document.getElementById('lastName').value = emp.lastName;
+    document.getElementById('contact').value = emp.contact;
+    document.getElementById('email').value = emp.email;
+    document.getElementById('role').value = emp.role;
+    document.getElementById('access').value = emp.access;
+    document.getElementById('status').value = emp.status;
+    document.getElementById('employeeModal').style.display = 'block';
+  }
+
+  function saveEmployee(e) {
+    e.preventDefault();
+    const employee = {
+      id: editingEmployeeId || (employees.length + 1).toString().padStart(2, '0'),
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      contact: document.getElementById('contact').value,
+      email: document.getElementById('email').value,
+      role: document.getElementById('role').value,
+      access: document.getElementById('access').value,
+      status: document.getElementById('status').value
+    };
+
+    if (editingEmployeeId) {
+      const index = employees.findIndex(e => e.id === editingEmployeeId);
+      employees[index] = employee;
+    } else {
+      employees.push(employee);
     }
-  
+
+    closeModal();
+    renderEmployeeTable();
+  }
+
+  function deleteEmployee(id) {
+    if (confirm('Are you sure you want to delete this employee?')) {
+      const index = employees.findIndex(e => e.id === id);
+      if (index > -1) {
+        employees.splice(index, 1);
+        renderEmployeeTable();
+      }
+    }
+  }
+
   renderEmployeeTable();
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('employeeModal');
+    if (event.target === modal) {
+      closeModal();
+    }
+  }
 </script>
+</body>
+</html>
