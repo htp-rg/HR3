@@ -287,14 +287,14 @@
                     </div>
                 </div>
             </header>
-      <section class="dashboard">
+     <section class="dashboard">
         <div class="search-bar">
           <input type="text" id="searchInput" onkeyup="searchTimesheet()" placeholder="Search by Employee ID or Date..." />
         </div>
- <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        <button onclick="openAddModal()" style="margin-bottom: 10px; padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
           Add Timesheet Record
         </button>
-       <div class="table-section">
+        <div class="table-section">
           <h4>Timesheet Records</h4>
           <table>
             <thead>
@@ -313,27 +313,8 @@
       </section>
     </div>
   </div>
-  
-<div id="addModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeAddModal()">&times;</span>
-      <h3>Add Timesheet</h3>
-      <form id="addTimesheetForm">
-        <label for="addEmployeeId">Employee ID:</label>
-        <input type="text" id="addEmployeeId" name="employeeId" />
-        <label for="addDate">Date:</label>
-        <input type="date" id="addDate" name="date" />
-        <label for="addHours">Hours Worked:</label>
-        <input type="number" id="addHours" name="hours" />
-        <label for="addOvertime">Overtime Hours:</label>
-        <input type="number" id="addOvertime" name="overtime" />
-        <div class="button-container">
-          <button type="button" class="add-btn" onclick="addTimesheet()">Add Timesheet</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  
+
+ 
   <div id="editModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
@@ -385,7 +366,7 @@
           <td>${entry.overtime}</td>
           <td>
             <button onclick="openEditModal(${index})">Edit</button>
-            <button onclick="openEditModal(${index})">Delete</button>
+            <button onclick="openDeleteModal(${index})">Delete</button>
           </td>
         `;
         tbody.appendChild(row);
@@ -399,6 +380,33 @@
         t.date.toLowerCase().includes(query)
       );
       displayTimesheets(filtered);
+    }
+
+    function openAddModal() {
+      document.getElementById('addModal').style.display = 'block';
+    }
+
+    function closeAddModal() {
+      document.getElementById('addModal').style.display = 'none';
+    }
+
+    function addTimesheet() {
+      const employeeId = document.getElementById('addEmployeeId').value;
+      const date = document.getElementById('addDate').value;
+      const hours = document.getElementById('addHours').value;
+      const overtime = document.getElementById('addOvertime').value;
+
+      const newTimesheet = {
+        id: `TS${timesheets.length + 1001}`,
+        employeeId,
+        date,
+        hours,
+        overtime
+      };
+
+      timesheets.push(newTimesheet);
+      displayTimesheets();
+      closeAddModal();
     }
 
     function openEditModal(index) {
@@ -429,13 +437,14 @@
       closeModal();
     }
 
-    function deleteTimesheet() {
+    function openDeleteModal(index) {
+      currentEditingIndex = index;
       if (confirm("Are you sure you want to delete this timesheet?")) {
-        timesheets.splice(currentEditingIndex, 1);
+        timesheets.splice(index, 1);
         displayTimesheets();
-        closeModal();
       }
     }
+
     function toggleSubMenu(id) {
       const submenu = document.getElementById(id);
       submenu.style.display = (submenu.style.display === 'none') ? 'block' : 'none';
