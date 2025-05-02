@@ -11,7 +11,7 @@
       margin: 0;
       padding: 0;
       background: #ecf0f1;
-      color: black;
+      color: white;
       height: 100vh;
       overflow: hidden;
     }
@@ -22,7 +22,7 @@
     }
     .sidebar {
       width: 280px;
-      background: rgba(44, 62, 80, 0.9);
+      background:navy;
       backdrop-filter: blur(10px);
       color: white;
       display: flex;
@@ -113,7 +113,7 @@
       flex: 1;
     }
     .table-section {
-      background: white;
+      background: navy;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
@@ -133,18 +133,26 @@
       border-collapse: collapse;
       margin-top: 10px;
     }
-    th, td {
+    th {
       text-align: left;
       padding: 10px;
+      color:navy;
       border-bottom: 1px solid #ddd;
     }
     th {
       background: #f4f4f4;
     }
+    td {
+      text-align: left;
+      padding: 10px;
+      color:white;
+      border-bottom: 1px solid #ddd;
+    }
+    }
     .actions i {
       margin-right: 10px;
       cursor: pointer;
-      color: #2c3e50;
+      color: white;
     }
     .modal {
       display: none;
@@ -158,7 +166,7 @@
       background-color: rgba(0,0,0,0.5);
     }
     .modal-content {
-      background-color: #fff;
+      background-color: navy;
       margin: 10% auto;
       padding: 20px;
       border: 1px solid #888;
@@ -239,12 +247,12 @@
                         <li><a href="ts_reporting.html">Timesheet Reporting</a></li>
                     </ul>
                     <li><a href="#" onclick="toggleSubMenu('claimReimbursement')">Claim and Reimbursement</a></li>
-                    <ul id="claimReimbursement" style="display:none;">
-                        <li><a href="policy.html">Policy</a></li>
-                        <li><a href="claimdata.html">Claim Data</a></li>
-                        <li><a href="configuration.html">Configuration</a></li>
-                        <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
-                    </ul>
+        <ul id="claimReimbursement" style="display:none;">
+          <li><a href="policy.html">Policy</a></li>
+          <li><a href="claimdata.html">Claim Data</a></li>
+          <li><a href="reporting_analysis.html">Reporting Analysis</a></li>
+          <li><a href="configuration.html">Configuration</a></li>
+        </ul>
                     <li><a href="#" onclick="toggleSubMenu('leaveManagement')">Leave Management</a></li>
                     <ul id="leaveManagement" style="display:none;">
                         <li><a href="lv_employee.html">Employee</a></li>
