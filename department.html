@@ -301,6 +301,7 @@
 
         <div class="table-section">
           <h4>Departments</h4>
+          <button onclick="openAddModal()">Add Department</button>
           <table>
             <thead>
               <tr>
@@ -320,7 +321,13 @@
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <h2 id="modalTitle"></h2>
-      <div id="modalContent"></div>
+      <div id="modalContent">
+        <label for="departmentId">Department ID:</label>
+        <input type="text" id="departmentId" /><br><br>
+        <label for="departmentName">Department Name:</label>
+        <input type="text" id="departmentName" /><br><br>
+        <button onclick="saveDepartment()">Save</button>
+      </div>
     </div>
   </div>
 
@@ -336,6 +343,8 @@
       { id: 'D004', name: 'Marketing' },
       { id: 'D005', name: 'Executives' }
     ];
+
+    let editingDepartment = null;
 
     function displayDepartments(list = departments) {
       const tableBody = document.getElementById('departmentTableBody');
@@ -378,7 +387,11 @@
     }
 
     function editDepartment(id) {
-      window.location.href = `editdepartment.html?id=${id}`;
+      editingDepartment = departments.find(d => d.id === id);
+      document.getElementById('modalTitle').innerText = 'Edit Department';
+      document.getElementById('departmentId').value = editingDepartment.id;
+      document.getElementById('departmentName').value = editingDepartment.name;
+      document.getElementById('departmentModal').style.display = 'block';
     }
 
     function deleteDepartment(id) {
@@ -387,6 +400,34 @@
         departments.splice(index, 1);
         displayDepartments();
       }
+    }
+
+    function openAddModal() {
+      editingDepartment = null;
+      document.getElementById('modalTitle').innerText = 'Add Department';
+      document.getElementById('departmentId').value = '';
+      document.getElementById('departmentName').value = '';
+      document.getElementById('departmentModal').style.display = 'block';
+    }
+
+    function saveDepartment() {
+      const departmentId = document.getElementById('departmentId').value;
+      const departmentName = document.getElementById('departmentName').value;
+
+      if (!departmentId || !departmentName) {
+        alert("Both fields are required.");
+        return;
+      }
+
+      if (editingDepartment) {
+        editingDepartment.id = departmentId;
+        editingDepartment.name = departmentName;
+      } else {
+        departments.push({ id: departmentId, name: departmentName });
+      }
+
+      displayDepartments();
+      closeModal();
     }
 
     function toggleSubMenu(id) {
